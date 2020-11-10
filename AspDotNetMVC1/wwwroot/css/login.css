@@ -1,0 +1,190 @@
+body{
+    
+    font-size: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.loginWindow
+{
+    background-color: rgb(164, 170, 168);
+    margin: auto;
+    width: 98%;
+    height: 95vh;
+    border: .5px solid green;
+    padding: 10px;
+}
+
+.loginbox
+{
+    display: flex;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background-color: rgb(36, 221, 159);
+    width: 50%;
+    height: 50vh;
+    border: .5px solid green;
+}
+
+.TabMenu
+{     
+    text-align: center;
+    margin-bottom: 1.2em;
+    float: left;
+    position: relative;
+    width: 30%;
+    height: 100%;
+    background-color: rgb(252, 243, 160);
+   
+}
+.TabDetail
+{ 
+    position: relative;
+    background-color: rgb(249, 250, 249);
+    width: 70%;
+   
+}
+.TabMenuLogin
+{
+    border-right: 1px solid #dcdcdc;
+    color: #fff;
+    height: 33.33%;
+    cursor: pointer;
+}
+.TabMenuLogin > span { 
+
+    line-height: 100px; 
+    vertical-align: middle; 
+}
+.TabMenuForgotPass
+{
+    border-right: 1px solid #dcdcdc;
+    color: #fff;
+    height: 33.33%;
+    cursor: pointer;
+}
+.TabMenuForgotPass > span { 
+
+    line-height: 100px; 
+    vertical-align: middle; 
+}
+.TabMenuRegister
+{
+    border-right: 1px solid #dcdcdc;
+    color: #fff;
+    height: 33.33%;
+    cursor: pointer;
+}
+
+.TabMenuRegister > span { 
+
+    line-height: 100px; 
+    vertical-align: middle; 
+}
+.TabMenuTextSelected
+{
+    background-color: #00ad45;
+    color: #fff;
+}
+.TabMenuTextNotSelected
+{
+    background-color: #fff;
+    color: #000;
+}
+.TabLoginDetail {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    color: #00ad45;
+}
+.TabRegisterDetail {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    color: #00ad45;
+}
+.TabForgotPassDetail {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    color: #00ad45;
+}
+div.form {
+    display: block;
+    text-align: center;
+}
+
+form {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+.loginheader {
+    height: 40%;
+}
+.loginuser {
+    height:20%;
+}
+.loginTextbox {
+    width: 50%;
+}
+.loginPwd {
+    width: 50%;
+}
+.loginpwd {
+    height: 20%;
+}
+
+.loginbtn {
+    height: 20%;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.EmpContainer {
+    background-color: rgb(249, 250, 249);
+    margin: auto;
+    width: 98%;
+    height: 95vh;
+    border: .5px solid green;
+    padding: 10px;
+}
+#div {
+    display: flex;
+    justify-content: center;
+}
+
+#table {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    align-self: center;
+}
+
+.myFont {
+    font-size: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+td, th {
+    padding: 0;
+    height: 20px;
+}
+
+#tableData tr:nth-child(odd) {
+    background-color: #ceffe3;
+}

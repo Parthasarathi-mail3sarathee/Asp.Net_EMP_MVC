@@ -1,0 +1,114 @@
+﻿@model LoginRegisterModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="loginWindow">
+    <div class="loginbox">
+        <div class="TabMenu">
+            <div class="TabMenuLogin TabMenuTextNotSelected">
+                <span>Login</span>
+            </div>
+            <div class="TabMenuRegister TabMenuTextSelected">
+                <span>Register</span>
+            </div>
+            <div class="TabMenuForgotPass TabMenuTextNotSelected">
+                <span>Forget Password</span>
+            </div>
+        </div>
+        <div class="TabDetail">
+            <div class="TabLoginDetail form">
+
+                <form action="/Home/Login" method="post" class="login-form">
+                    <div class="form-group loginheader">
+                        <h1> Login Here  </h1>
+                    </div>
+                    <div class="form-group loginuser">
+                        <label>User Name: </label>
+                        @Html.EditorFor(model => model.login.username, new { htmlAttributes = new { @class = "loginTextbox" } })*
+                        @Html.ValidationMessageFor(model => model.login.username)
+                    </div>
+                    <div class="form-group loginpwd">
+                        <label>Password:</label>
+                        @Html.EditorFor(model => model.login.password, new { htmlAttributes = new { @class = "loginPwd" } }) *
+                        @Html.ValidationMessageFor(model => model.login.password)
+
+                    </div>
+                    <div class="form-group error">
+                        @if (@ViewBag.Failedcount != null)
+                        {
+
+                            <label> Failed Attempt count is: @ViewBag.Failedcount</label>
+                        }
+
+                        @if (@ViewBag.NotValidUser != null)
+                        {
+
+                            <label> @ViewBag.NotValidUser</label>
+                        }
+                    </div>
+                    <div class="loginbtn">
+
+                        <input type="submit" value="Login" class="button" />
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="TabRegisterDetail form">
+               
+                <form action="/Home/Regiser" method="post" class="login-form">
+                    <div class="form-group loginheader">
+                        <h1>  Register Here  </h1>
+                    </div>
+                    <div class="form-group loginuser">
+                        <label>User Name: </label>
+                        @Html.EditorFor(model => model.register.Name, new { htmlAttributes = new { @class = "loginTextbox" } })*
+                        @Html.ValidationMessageFor(model => model.register.Name)
+                    </div>
+                    <div class="form-group loginpwd">
+                        <label>Password:</label>
+                        @Html.EditorFor(model => model.register.Password, new { htmlAttributes = new { @class = "loginPwd" } }) *
+                        @Html.ValidationMessageFor(model => model.register.Password)
+
+                    </div>
+                    <div class="form-group error">
+                        <label>Confirm Password:</label>
+                        @Html.EditorFor(model => model.register.ConfirmPassword, new { htmlAttributes = new { @class = "loginPwd" } }) *
+                        @Html.ValidationMessageFor(model => model.register.ConfirmPassword)
+
+                    </div> 
+                    <div class="form-group error">
+                        <label>Email:</label>
+                        @Html.EditorFor(model => model.register.Email, new { htmlAttributes = new { @class = "loginPwd" } }) *
+                        @Html.ValidationMessageFor(model => model.register.Email)
+
+                    </div>
+                    <div class="loginbtn">
+
+                        <input type="submit" value="Register" class="button" />
+
+                    </div>
+                </form>
+            </div>
+            <div class="TabForgotPassDetail form">
+                <form action="/Home/ForgetPassword" method="post" class="login-form">
+                    <div class="form-group loginheader">
+                        <h1> Forget Password  </h1>
+                    </div>
+                    <div class="form-group loginuser">
+                        <label>Email:</label>
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "loginPwd" } }) *
+                        @Html.ValidationMessageFor(model => model.email)
+                    </div>
+                   
+                    <div class="loginbtn">
+
+                        <input type="submit" value="ForgetPassword" class="button" />
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
