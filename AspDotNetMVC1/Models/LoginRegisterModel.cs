@@ -19,6 +19,11 @@ namespace AspDotNetMVC1.Models
         public string Email { get; set; }
     }
 
+    public class forgetemail
+    {
+        public string email { get; set; }
+    }
+
     public class LoginRegisterModel
     {
         public Login login { get; set; }

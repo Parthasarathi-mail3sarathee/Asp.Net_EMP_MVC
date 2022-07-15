@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@Html.Hidden("NotValidUser", (string)ViewBag.NotValidUser)
 <div class="loginWindow">
     <div class="loginbox">
         <div class="TabMenu">
@@ -35,16 +35,13 @@
 
                     </div>
                     <div class="form-group error">
-                        @if (@ViewBag.Failedcount != null)
-                        {
-
-                            <label> Failed Attempt count is: @ViewBag.Failedcount</label>
-                        }
 
                         @if (@ViewBag.NotValidUser != null)
                         {
 
-                            <label> @ViewBag.NotValidUser</label>
+                            <label  class="msg"> Not a valid user </label><br/>
+                            <span class="msg">Click register yourself a new user or </span>  <br/>
+                            <span  class="msg">Click forget password</span><br/>
                         }
                     </div>
                     <div class="loginbtn">
