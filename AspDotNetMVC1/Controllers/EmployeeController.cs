@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspDotNetMVC1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspDotNetMVC1.Controllers
 {
@@ -12,10 +13,21 @@ namespace AspDotNetMVC1.Controllers
     {
         public IActionResult GetEmployeeList()
         {
-            return View("EmployeeList");
-        }
+            byte[] userId;
+            if(HttpContext.Session.TryGetValue("UserID", out userId))
+            {
 
-       
+                ViewBag.SessionSet = "true";
+                return View("EmployeeList");
+            }
+            else
+            {
+                ViewBag.SessionSet = "false";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

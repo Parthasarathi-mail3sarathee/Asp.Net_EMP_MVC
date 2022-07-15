@@ -1,0 +1,37 @@
+﻿@model LoginRegisterModel;
+<div class="TabForgotPassDetail form">
+    <form action="/Home/Regiser" method="post" class="login-form">
+        <div class="form-group loginheader">
+            <h1>  Register Here  </h1>
+        </div>
+        <div class="form-group loginuser">
+            <label>User Name: </label>
+            @Html.EditorFor(model => model.register.Name, new { htmlAttributes = new { @class = "loginTextbox" } })*
+            @Html.ValidationMessageFor(model => model.register.Name)
+        </div>
+        <div class="form-group loginpwd">
+            <label>Password:</label>
+            @Html.EditorFor(model => model.register.Password, new { htmlAttributes = new { @class = "loginPwd" } }) *
+            @Html.ValidationMessageFor(model => model.register.Password)
+
+        </div>
+        <div class="form-group error">
+            <label>Confirm Password:</label>
+            @Html.EditorFor(model => model.register.ConfirmPassword, new { htmlAttributes = new { @class = "loginPwd" } }) *
+            @Html.ValidationMessageFor(model => model.register.ConfirmPassword)
+
+        </div>
+        <div class="form-group error">
+            <label>Email:</label>
+            @Html.EditorFor(model => model.register.Email, new { htmlAttributes = new { @class = "loginPwd" } }) *
+            @Html.ValidationMessageFor(model => model.register.Email)
+
+        </div>
+        <div class="loginbtn">
+
+            <input type="submit" value="Register" class="button" />
+
+        </div>
+    </form>
+
+</div>

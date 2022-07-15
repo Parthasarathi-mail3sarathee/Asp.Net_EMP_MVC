@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspDotNetMVC1.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspDotNetMVC1.Controllers
 {
@@ -14,54 +16,52 @@ namespace AspDotNetMVC1.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
-        public IActionResult Login(Login loginModel)
+        public IActionResult Login(LoginRegisterModel loginModel)
         {
 
-            var item = "Success";
-            if (item == "Success")
+            if (loginModel.login.username == "test" && loginModel.login.password == "test")
             {
+                ViewBag.NotValidUser = "false";
+                HttpContext.Session.SetString("UserID", loginModel.login.username);
 
                 return RedirectToAction("GetEmployeeList", "Employee");
             }
-            else if (item == "User Does not Exists")
+            else 
 
             {
-                ViewBag.NotValidUser = item;
+                ViewBag.NotValidUser = "true";
 
-            }
-            else
-            {
-                ViewBag.Failedcount = item;
             }
 
             return View("Index");
         }
 
-        [HttpPost]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return View("Index");
+        }
+            [HttpPost]
         public IActionResult Regiser(Register register)
         {
-
-            var item = "Success";
-            if (item == "Success")
+            if (ModelState.IsValid)
             {
-
-                return RedirectToAction("GetEmployeeList", "Employee");
-            }
-            else if (item == "User Does not Exists")
-
-            {
-                ViewBag.NotValidUser = item;
-
-            }
-            else
-            {
-                ViewBag.Failedcount = item;
+                if ("Success" == "Success")
+                {
+                    ViewBag.RegisteredUser = "true";
+                }
+                else
+                {
+                    ViewBag.RegisteredUser = "false";
+                }
             }
 
             return View("Index");
         }
+
         [HttpPost]
         public IActionResult ForgetPassword(string email)
         {
