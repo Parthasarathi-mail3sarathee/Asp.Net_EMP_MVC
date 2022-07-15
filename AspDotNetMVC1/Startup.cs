@@ -30,7 +30,7 @@ namespace AspDotNetMVC1
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddResponseCaching();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,7 +51,17 @@ namespace AspDotNetMVC1
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.Use(async (ctx, next) =>
+            {
+                ctx.Request.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                {
+                    Public = true,
+                    MaxAge = TimeSpan.FromSeconds(60)
+                };
+                await next();
+            }
+            );
+            app.UseResponseCaching();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
