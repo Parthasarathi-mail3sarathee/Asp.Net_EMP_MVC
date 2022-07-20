@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AspDotNetMVC1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using AspDotNetMVC1.ConsumeAPI;
 
 namespace AspDotNetMVC1.Controllers
 {
@@ -16,19 +17,24 @@ namespace AspDotNetMVC1.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult Login(LoginRegisterModel loginModel)
         {
-
-            if (loginModel.login.username == "test" && loginModel.login.password == "test")
+            AuthenticateUser authUser = new AuthenticateUser();
+            WebApplication_Shared_Services.Model.Login login = new WebApplication_Shared_Services.Model.Login();
+            login.username = loginModel.login.username;
+            login.password = loginModel.login.password;
+            Token token = authUser.GetLogin(login).Result;
+            if (token != null)
             {
                 ViewBag.NotValidUser = "false";
                 HttpContext.Session.SetString("UserID", loginModel.login.username);
+                HttpContext.Session.SetString("token", token.token);
 
                 return RedirectToAction("GetEmployeeList", "Employee");
             }
-            else 
+            else
 
             {
                 ViewBag.NotValidUser = "true";
@@ -44,7 +50,7 @@ namespace AspDotNetMVC1.Controllers
             HttpContext.Session.Clear();
             return View("Index");
         }
-            [HttpPost]
+        [HttpPost]
         public IActionResult Regiser(Register register)
         {
             if (ModelState.IsValid)

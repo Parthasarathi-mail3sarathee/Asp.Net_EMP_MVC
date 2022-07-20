@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Repo2\EMP_WebAPI\WebApplication_Shared_Services_Model\WebApplication_Shared_Services_Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Views\Employee\EmployeeList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

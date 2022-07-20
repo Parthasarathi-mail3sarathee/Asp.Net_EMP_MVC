@@ -31,4 +31,9 @@ namespace AspDotNetMVC1.Models
         public string email { get; set; }
 
     }
+
+    public class Token
+    {
+        public string token { get; set; }
+    }
 }
