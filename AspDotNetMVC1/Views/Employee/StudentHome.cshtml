@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
+<a asp-area="" asp-controller="Home" asp-action="Logout" class="lgout">Logout</a>
+<div class="EmpContainer">
+
+    Student Home
+</div>

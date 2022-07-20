@@ -1,17 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using AspDotNetMVC1.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using AspDotNetMVC1.Models;
 using System.Threading.Tasks;
+using WebApplication_Shared_Services.Model;
 
 namespace AspDotNetMVC1.ConsumeAPI
 {
-    public class AuthenticateUserAPI
+    public class StudentRepoAPI
     {
-        public async Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login)
+        public async Task<StudentList> GetStudents(string token)
         {
-            Token token = null;
+            StudentList stdlist  = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
             using (var client = new HttpClient())
             {
@@ -20,23 +22,26 @@ namespace AspDotNetMVC1.ConsumeAPI
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var myContent = JsonConvert.SerializeObject(login);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PostAsync("token", byteContent).Result;
+                var result = client.GetAsync("Student/Getall").Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
-                    var tokenString = result.Content.ReadAsStringAsync().Result;
+                    var getAllStudentString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    token = JsonConvert.DeserializeObject<Token>(tokenString);
+                    stdlist.Students = JsonConvert.DeserializeObject<List<Student>>(getAllStudentString);
+                    stdlist.status = "200";
+                }
+                else
+                {
+                    stdlist.Students = null;
+                    stdlist.status = "401";
                 }
                 //returning the employee list to view
-                return token;
+                return stdlist;
             }
         }
     }

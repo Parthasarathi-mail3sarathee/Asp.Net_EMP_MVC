@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication_Shared_Services.Model;
 
 namespace AspDotNetMVC1.Models
 {
@@ -36,4 +37,10 @@ namespace AspDotNetMVC1.Models
     {
         public string token { get; set; }
     }
+
+    public class StudentList
+    {
+        public List<Student> Students { get; set; }
+        public string status { get; set; }
+}
 }

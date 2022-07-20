@@ -1,4 +1,4 @@
-﻿
+﻿@using WebApplication_Shared_Services.Model
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,12 +6,12 @@
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
 <a asp-area="" asp-controller="Home" asp-action="Logout" class="lgout">Logout</a>
 <div class="EmpContainer">
-    
+
     <div id="div">
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont">
             <tr>
                 <td>
-                    <table  id="tableHeader" cellspacing="0" cellpadding="1" border="1" width="800">
+                    <table id="tableHeader" cellspacing="0" cellpadding="1" border="1" width="800">
                         <tr style="color:white;background-color:#4CAF50">
                             <th width="100">ID</th>
                             <th width="100">Name</th>
@@ -30,182 +30,21 @@
                 <td>
                     <div style="width:100%; height:120px; overflow-y: auto;">
                         <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="100">new item</td>
-                                <td width="80">new item</td>
-                                <td></td>
-                            </tr>
+                            @foreach (Student std in (List<Student>)ViewBag.studentList)
+                            {
+                                <tr>
+                                    <td width="100">@std.ID</td>
+                                    <td width="100">@std.Name</td>
+                                    <td width="100">@std.Address</td>
+                                    <td width="100">@std.Role</td>
+                                    <td width="100">@std.Department</td>
+                                    <td width="100">@std.Email</td>
+                                    <td width="100">new item</td>
+                                    <td width="80">new item</td>
+                                    <td></td>
+                                </tr>
+                            }
+                           
                         </table>
                     </div>
                 </td>

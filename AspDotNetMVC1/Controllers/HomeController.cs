@@ -13,6 +13,12 @@ namespace AspDotNetMVC1.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        public HomeController(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
         public IActionResult Index()
         {
             return View();
@@ -21,7 +27,7 @@ namespace AspDotNetMVC1.Controllers
         [HttpPost]
         public IActionResult Login(LoginRegisterModel loginModel)
         {
-            AuthenticateUser authUser = new AuthenticateUser();
+            AuthenticateUserAPI authUser = new AuthenticateUserAPI();
             WebApplication_Shared_Services.Model.Login login = new WebApplication_Shared_Services.Model.Login();
             login.username = loginModel.login.username;
             login.password = loginModel.login.password;
