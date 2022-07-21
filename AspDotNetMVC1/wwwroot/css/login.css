@@ -1,12 +1,10 @@
-body{
-    
+body {
     font-size: 100%;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
 }
 
-.loginWindow
-{
+.loginWindow {
     background-color: rgb(164, 170, 168);
     margin: auto;
     width: 98%;
@@ -15,8 +13,7 @@ body{
     padding: 10px;
 }
 
-.loginbox
-{
+.loginbox {
     display: flex;
     position: absolute;
     top: 25%;
@@ -27,8 +24,7 @@ body{
     border: .5px solid green;
 }
 
-.TabMenu
-{     
+.TabMenu {
     text-align: center;
     margin-bottom: 1.2em;
     float: left;
@@ -36,62 +32,60 @@ body{
     width: 30%;
     height: 100%;
     background-color: rgb(252, 243, 160);
-   
 }
-.TabDetail
-{ 
+
+.TabDetail {
     position: relative;
     background-color: rgb(249, 250, 249);
     width: 70%;
-   
 }
-.TabMenuLogin
-{
-    border-right: 1px solid #dcdcdc;
-    color: #fff;
-    height: 33.33%;
-    cursor: pointer;
-}
-.TabMenuLogin > span { 
 
-    line-height: 100px; 
-    vertical-align: middle; 
-}
-.TabMenuForgotPass
-{
-    border-right: 1px solid #dcdcdc;
-    color: #fff;
-    height: 33.33%;
-    cursor: pointer;
-}
-.TabMenuForgotPass > span { 
-
-    line-height: 100px; 
-    vertical-align: middle; 
-}
-.TabMenuRegister
-{
+.TabMenuLogin {
     border-right: 1px solid #dcdcdc;
     color: #fff;
     height: 33.33%;
     cursor: pointer;
 }
 
-.TabMenuRegister > span { 
+    .TabMenuLogin > span {
+        line-height: 100px;
+        vertical-align: middle;
+    }
 
-    line-height: 100px; 
-    vertical-align: middle; 
+.TabMenuForgotPass {
+    border-right: 1px solid #dcdcdc;
+    color: #fff;
+    height: 33.33%;
+    cursor: pointer;
 }
-.TabMenuTextSelected
-{
+
+    .TabMenuForgotPass > span {
+        line-height: 100px;
+        vertical-align: middle;
+    }
+
+.TabMenuRegister {
+    border-right: 1px solid #dcdcdc;
+    color: #fff;
+    height: 33.33%;
+    cursor: pointer;
+}
+
+    .TabMenuRegister > span {
+        line-height: 100px;
+        vertical-align: middle;
+    }
+
+.TabMenuTextSelected {
     background-color: #00ad45;
     color: #fff;
 }
-.TabMenuTextNotSelected
-{
+
+.TabMenuTextNotSelected {
     background-color: #fff;
     color: #000;
 }
+
 .TabLoginDetail {
     display: flex;
     flex-wrap: wrap;
@@ -99,6 +93,7 @@ body{
     align-items: center;
     color: #00ad45;
 }
+
 .TabRegisterDetail {
     display: flex;
     flex-wrap: wrap;
@@ -106,6 +101,7 @@ body{
     align-items: center;
     color: #00ad45;
 }
+
 .TabForgotPassDetail {
     display: flex;
     flex-wrap: wrap;
@@ -113,6 +109,7 @@ body{
     align-items: center;
     color: #00ad45;
 }
+
 div.form {
     display: block;
     text-align: center;
@@ -124,18 +121,23 @@ form {
     margin-right: auto;
     text-align: left;
 }
+
 .loginheader {
     height: 40%;
 }
+
 .loginuser {
-    height:20%;
+    height: 20%;
 }
+
 .loginTextbox {
     width: 50%;
 }
+
 .loginPwd {
     width: 50%;
 }
+
 .loginpwd {
     height: 20%;
 }
@@ -163,6 +165,7 @@ form {
     border: .5px solid green;
     padding: 10px;
 }
+
 #div {
     display: flex;
     justify-content: center;
@@ -180,18 +183,57 @@ form {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
 }
+
 td, th {
     padding: 0;
     height: 20px;
 }
-.msg{
-    color: red!important;
+
+.msg {
+    color: red !important;
 }
+
 #tableData tr:nth-child(odd) {
     background-color: #ceffe3;
 }
+
 .lgout {
     position: relative !important;
     left: 1050px !important;
     font-size: 16px !important;
 }
+
+.buttontblAdd {
+    position: relative !important;
+    left: 410px !important;
+    top: 16px !important;
+    background-color: #fcbd6f; /* Green */
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+    .buttontblAdd:hover {
+        background-color: #ff8c00;
+        color: white;
+    }
+
+.buttontbl {
+    background-color: #fcbd6f; /* Green */
+    border: none;
+    color: black;
+    padding: 8px 16spx;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+    .buttontbl:hover {
+        background-color: #ff8c00;
+        color: white;
+    }

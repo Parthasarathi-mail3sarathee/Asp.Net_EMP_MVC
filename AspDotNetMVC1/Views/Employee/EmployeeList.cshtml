@@ -8,6 +8,7 @@
 <div class="EmpContainer">
 
     <div id="div">
+        <input type="submit" value="Add Employee" class="buttontblAdd" />
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont">
             <tr>
                 <td>
@@ -19,6 +20,9 @@
                             <th width="100">Role</th>
                             <th width="100">Department</th>
                             <th width="100">Email</th>
+                            <th width="100">DOB</th>
+                            <th width="100">DOJ</th>
+                            <th width="100">SkillSet</th>
                             <th width="100">Edit</th>
                             <th width="80">Delete</th>
                             <th width="20"></th>
@@ -28,7 +32,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width:100%; height:120px; overflow-y: auto;">
+                    <div style="width:100%; height:380px; overflow-y: auto;">
                         <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
                             @foreach (Student std in (List<Student>)ViewBag.studentList)
                             {
@@ -39,12 +43,17 @@
                                     <td width="100">@std.Role</td>
                                     <td width="100">@std.Department</td>
                                     <td width="100">@std.Email</td>
-                                    <td width="100">new item</td>
-                                    <td width="80">new item</td>
-                                    <td></td>
+                                    <td width="100">@std.DOB</td>
+                                    <td width="100">@std.DOJ</td>
+                                    <td width="100">
+                                        @string.Join(", ", std.SkillSets)
+                                    </td>
+                                    <td width="100">  <input type="submit" value="Edit" class="buttontbl" /></td>
+                                    <td width="80">  <input type="submit" value="De;ete" class="buttontbl" /></td>
+                                    <td width="20"></td>
                                 </tr>
                             }
-                           
+
                         </table>
                     </div>
                 </td>
