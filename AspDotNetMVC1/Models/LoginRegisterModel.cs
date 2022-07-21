@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication_Shared_Services.Model;
@@ -42,5 +43,26 @@ namespace AspDotNetMVC1.Models
     {
         public List<Student> Students { get; set; }
         public string status { get; set; }
-}
+    }
+    public class StudentViewModel
+    {
+        [StringLength(20), Required]
+        public string Name { get; set; }
+        public int ID { get; set; }
+        [StringLength(300)]
+        public string Address { get; set; }
+        [StringLength(7)]
+        public string Role { get; set; }
+        [StringLength(15)]
+        public string Department { get; set; }
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        public string Email { get; set; }
+        public List<string> SkillSets { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        public DateTime DOB { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        public DateTime DOJ { get; set; }
+        public bool IsActive { get; set; }
+    }
 }

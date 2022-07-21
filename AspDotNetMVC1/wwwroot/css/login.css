@@ -193,6 +193,12 @@ td, th {
     color: red !important;
 }
 
+.msgInner {
+    font-size: 18px;
+    color: red !important;
+}
+
+
 #tableData tr:nth-child(odd) {
     background-color: #ceffe3;
 }
@@ -226,7 +232,7 @@ td, th {
     background-color: #44db4a; /* Green */
     border: none;
     color: black;
-    padding: 8px 16spx;
+    padding: 8px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -237,3 +243,20 @@ td, th {
         background-color: #329c36;
         color: white;
     }
+/* Create two equal columns that floats next to each other */
+.columnform {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+/* Clear floats after the columns */
+.rowform:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.odd {
+    background-color: #ceffe3;
+}

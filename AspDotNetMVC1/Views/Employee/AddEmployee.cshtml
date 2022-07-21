@@ -1,0 +1,87 @@
+﻿@model StudentViewModel;
+@{
+
+    ViewData["Title"] = "Home Page";
+}
+
+@Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
+<a asp-area="" asp-controller="Home" asp-action="Logout" class="lgout">Logout</a>
+<div class="EmpContainer">
+
+    Add Employee
+    <input type="submit" value="Employee List" class="buttontblAdd" onclick="location.href='@Url.Action("GetEmployeeList", "Employee")'" />
+    <h2>Employee Details</h2>
+    <div> <span class="msgInner">@ViewBag.msg</span></div>
+    @using (@Html.BeginForm("SaveEmployee", "Employee"))
+    {
+        <div class="rowform odd">
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+
+            </div>
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Address)
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                </div>
+            </div>
+        </div> <div class="rowform">
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Role)
+                    @Html.TextBoxFor(m => m.Role, new { @class = "form-control" })
+                </div>
+
+            </div>
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Department)
+                    @Html.TextBoxFor(m => m.Department, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="rowform odd">
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+
+            </div>
+            <div class="columnform">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DOB)
+                    @Html.TextBoxFor(m => m.DOB, new { @class = "form-control datepicker" })
+                </div>
+            </div>
+        </div>
+        <div class="rowform">
+            <div class="columnform">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DOJ)
+                    @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control datepicker" })
+                </div>
+            </div>
+            <div class="columnform">
+            </div>
+        </div>
+        <div class="rowform odd">
+            <div class="columnform">
+                @Html.HiddenFor(m => m.ID)
+                <button type="submit" class="btn btn-primary">Save Employee</button>
+            </div>
+            <div class="columnform">
+                <button type="reset" class="btn btn-primary">Clear field</button>
+            </div>
+        </div>
+    }
+</div>

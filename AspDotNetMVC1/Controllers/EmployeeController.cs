@@ -8,6 +8,7 @@ using AspDotNetMVC1.Models;
 using Microsoft.AspNetCore.Authorization;
 using AspDotNetMVC1.ConsumeAPI;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace AspDotNetMVC1.Controllers
 {
@@ -47,7 +48,7 @@ namespace AspDotNetMVC1.Controllers
             }
             if (studentlist.status == "200")
             {
-                ViewBag.SessionSet = "true"; 
+                ViewBag.SessionSet = "true";
                 return View("EmployeeList");
             }
             else if (studentlist.status == "401")
@@ -61,7 +62,61 @@ namespace AspDotNetMVC1.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        public IActionResult AddEmployee()
+        {
+            return View("AddEmployee", new StudentViewModel());
+        }
 
+        public IActionResult SaveEmployee(StudentViewModel stud)
+        {
+            string status = string.Empty;
+            if (stud.ID == 0)
+            {
+                string token = _session.GetString("token");
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                if (token != null)
+                {
+                    StudentRepoAPI studentRepoapi = new StudentRepoAPI();
+                    WebApplication_Shared_Services.Model.Student std = new WebApplication_Shared_Services.Model.Student();
+                    std.ID = stud.ID;
+                    std.Name = stud.Name;
+                    std.Address = stud.Address;
+                    std.Role = stud.Role;
+                    std.Department = stud.Department;
+                    std.Email = stud.Email;
+                    std.DOB = stud.DOB;
+                    std.DOJ = stud.DOJ;
+
+                    //std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "{0:MMM dd, yyyy}", provider); 
+                    //std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "{0:MMM dd, yyyy}", provider);
+
+                    status = studentRepoapi.AddStudent(std, token).Result;
+                }
+                if (status == "200")
+                {
+                    ViewBag.msg = "Employee added successfully";
+                }
+                else if (status == "401")
+                {
+                    ViewBag.msg = "Unauthorized access";
+                    return View("AddEmployee");
+                }
+                else if (status == "400")
+                {
+                    ViewBag.msg = "Something wen wrong in the application, try aftersometimes";
+                    return View("AddEmployee");
+                }
+                else
+                {
+                    ViewBag.msg = "Employee updated successfully";
+                }
+            }
+            else
+            {
+                ViewBag.msg = "Employee updated successfully";
+            }
+            return View("AddEmployee");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
