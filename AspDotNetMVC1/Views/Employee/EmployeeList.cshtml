@@ -8,7 +8,10 @@
 <div class="EmpContainer">
 
     <div id="div">
+
         <input type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'" />
+        
+        <span class="msgInner">@ViewBag.msg</span><br/>
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont">
             <tr>
                 <td>
@@ -46,10 +49,14 @@
                                     <td width="100">@std.DOB</td>
                                     <td width="100">@std.DOJ</td>
                                     <td width="100">
-                                        @string.Join(", ", std.SkillSets)
+                                        @if (std.SkillSets != null)
+                                        {
+                                            @string.Join(", ", std.SkillSets)
+                                            ;
+                                        }
                                     </td>
-                                    <td width="100">  <input type="submit" value="Edit" class="buttontbl" /></td>
-                                    <td width="80">  <input type="submit" value="Delete" class="buttontbl" /></td>
+                                    <td width="100">  <input type="submit" id="Edit_@std.ID" value="Edit" class="buttontbl" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'" /></td>
+                                    <td width="80">  <input type="submit" id="Delete_@std.ID" value="Delete" class="buttontbl" onclick="location.href='@Url.Action("DelEmployee/"+@std.ID, "Employee")'" /></td>
                                     <td width="20"></td>
                                 </tr>
                             }

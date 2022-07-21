@@ -44,6 +44,12 @@ namespace AspDotNetMVC1.Models
         public List<Student> Students { get; set; }
         public string status { get; set; }
     }
+
+    public class StudentModel
+    {
+        public Student Student { get; set; }
+        public string status { get; set; }
+    }
     public class StudentViewModel
     {
         [StringLength(20), Required]
@@ -58,11 +64,11 @@ namespace AspDotNetMVC1.Models
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
         public List<string> SkillSets { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
-        public DateTime DOB { get; set; }
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
-        public DateTime DOJ { get; set; }
+      
+        [Display(Name = "Date Of Birth")]
+        public string DOB { get; set; }
+        [Display(Name = "Date Of Joining")]
+        public string DOJ { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -67,9 +67,43 @@ jQuery(document).ready(function ($) {
     });
 
     $(".datepicker").datepicker({
-        dateFormat: "MMM dd, yyyy",
+        timepicker: false,
+        dateFormat: "MM-dd-yyyy",
         changemonth: true,
-        changeyear: true
+        changeyear: true,
     });
 
+    
+    //$(".btnEdit").click(function (e) {
+    //    // avoid to execute the actual submit of the form.
+    //    var id = $(this).attr('id');
+    //    var myArray = id.split("_");
+    //    let word = myArray[1];
+    //    alert(word);
+    //    $.get("../Employee/EditEmployee/" + word);
+    //});
+    //$(".btnDel").click(function (e) {
+    //    // avoid to execute the actual submit of the form.
+    //    var id = $(this).attr('id');
+    //    var myArray = id.split("_");
+    //    let word = myArray[1];
+    //    alert(word);
+    //});
+
+    $("#btnSave").click(function (e) {
+        // avoid to execute the actual submit of the form.
+        var form = $("#frmAddEmp");
+        var data1 = form.serialize();
+        $.ajax({
+            type: "POST",
+            url: "../Employee/SaveEmployee",
+            data: data1, // serializes the form's elements.
+            success: function (data) { // show response from the php script.
+                $(".msgInner").text(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }       
+        });
+    });
 });

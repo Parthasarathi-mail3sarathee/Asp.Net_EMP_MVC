@@ -12,8 +12,7 @@
     <input type="submit" value="Employee List" class="buttontblAdd" onclick="location.href='@Url.Action("GetEmployeeList", "Employee")'" />
     <h2>Employee Details</h2>
     <div> <span class="msgInner">@ViewBag.msg</span></div>
-    @using (@Html.BeginForm("SaveEmployee", "Employee"))
-    {
+    <form method="post" id="frmAddEmp">
         <div class="rowform odd">
             <div class="columnform">
 
@@ -60,7 +59,8 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.DOB)
-                    @Html.TextBoxFor(m => m.DOB, new { @class = "form-control datepicker" })
+                    @Html.TextBoxFor(m => m.DOB, new { Name = "txtDOB", id = "txtDOB", @class = "form-control datepicker" })
+
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="columnform">
                 <div class="form-group">
                     @Html.LabelFor(m => m.DOJ)
-                    @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control datepicker" })
+                    @Html.TextBoxFor(m => m.DOJ, new { Name = "txtDOJ", id = "txtDOJ", @class = "form-control datepicker" })
                 </div>
             </div>
             <div class="columnform">
@@ -77,11 +77,11 @@
         <div class="rowform odd">
             <div class="columnform">
                 @Html.HiddenFor(m => m.ID)
-                <button type="submit" class="btn btn-primary">Save Employee</button>
+                <button type="button" id="btnSave" class="btn btn-primary">Save Employee</button>
             </div>
             <div class="columnform">
                 <button type="reset" class="btn btn-primary">Clear field</button>
             </div>
         </div>
-    }
+    </form>
 </div>

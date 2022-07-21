@@ -13,30 +13,37 @@ namespace AspDotNetMVC1.ConsumeAPI
         {
             Token token = null;
             string Baseurl = "https://localhost:44379/api/";
-            using (var client = new HttpClient())
+            try
             {
-                //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
-                client.DefaultRequestHeaders.Clear();
-                //Define request data format
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var myContent = JsonConvert.SerializeObject(login);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PostAsync("token", byteContent).Result;
-                //Checking the response is successful or not which is sent using HttpClient
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    //Storing the response details recieved from web api
-                    var tokenString = result.Content.ReadAsStringAsync().Result;
-                    //Deserializing the response recieved from web api and storing into the Employee list
-                    token = JsonConvert.DeserializeObject<Token>(tokenString);
+                    //Passing service base url
+                    client.BaseAddress = new Uri(Baseurl);
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var myContent = JsonConvert.SerializeObject(login);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    //Sending request to find web api REST service resource Gettoken using HttpClient
+                    var result = client.PostAsync("token", byteContent).Result;
+                    //Checking the response is successful or not which is sent using HttpClient
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //Storing the response details recieved from web api
+                        var tokenString = result.Content.ReadAsStringAsync().Result;
+                        //Deserializing the response recieved from web api and storing into the Employee list
+                        token = JsonConvert.DeserializeObject<Token>(tokenString);
+                    }
+                    //returning the employee list to view
+                    return token;
                 }
-                //returning the employee list to view
-                return token;
+            }
+            catch(Exception ex)
+            {
+                return null;
             }
         }
     }

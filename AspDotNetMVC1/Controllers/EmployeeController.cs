@@ -66,10 +66,45 @@ namespace AspDotNetMVC1.Controllers
         {
             return View("AddEmployee", new StudentViewModel());
         }
+        public IActionResult EditEmployee(int id)
+        {
+            string token = _session.GetString("token");
+            StudentRepoAPI studentRepoapi = new StudentRepoAPI();
+            var stud = studentRepoapi.GetStudentByID(id, token);
+            StudentViewModel stdvm = new StudentViewModel();
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
-        public IActionResult SaveEmployee(StudentViewModel stud)
+            stdvm.ID = stud.Student.ID;
+            stdvm.Name = stud.Student.Name;
+            stdvm.Address = stud.Student.Address;
+            stdvm.Role = stud.Student.Role;
+            stdvm.Department = stud.Student.Department;
+            stdvm.Email = stud.Student.Email;
+            //std.DOB = stud.Student.DOB;
+            //std.DOJ = stud.Student.DOJ;
+            stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
+            stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
+
+            return View("AddEmployee", stdvm);
+        }
+
+        public IActionResult DelEmployee(int id)
+        {
+            StudentList studentlist = null;
+            string token = _session.GetString("token");
+            StudentRepoAPI studentRepoapi = new StudentRepoAPI();
+            var stud = studentRepoapi.DelStudent(id, token);
+            studentlist = studentRepoapi.GetStudents(token).Result;
+            ViewBag.studentList = studentlist.Students;
+            ViewBag.msg = "Employee deleted sucessfully (id:" + id + ")";
+            return View("EmployeeList");
+        }
+
+        [HttpPost]
+        public string SaveEmployee(StudentViewModel stud)
         {
             string status = string.Empty;
+            string msg = string.Empty;
             if (stud.ID == 0)
             {
                 string token = _session.GetString("token");
@@ -84,38 +119,68 @@ namespace AspDotNetMVC1.Controllers
                     std.Role = stud.Role;
                     std.Department = stud.Department;
                     std.Email = stud.Email;
-                    std.DOB = stud.DOB;
-                    std.DOJ = stud.DOJ;
-
-                    //std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "{0:MMM dd, yyyy}", provider); 
-                    //std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "{0:MMM dd, yyyy}", provider);
+                    //std.DOB = stud.DOB;
+                    //std.DOJ = stud.DOJ;
+                    std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
+                    std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
 
                     status = studentRepoapi.AddStudent(std, token).Result;
                 }
                 if (status == "200")
                 {
-                    ViewBag.msg = "Employee added successfully";
+                    msg = "Employee added successfully";
+                    return msg;
                 }
                 else if (status == "401")
                 {
-                    ViewBag.msg = "Unauthorized access";
-                    return View("AddEmployee");
-                }
-                else if (status == "400")
-                {
-                    ViewBag.msg = "Something wen wrong in the application, try aftersometimes";
-                    return View("AddEmployee");
+                    msg = "Unauthorized access";
+                    return msg;
                 }
                 else
                 {
-                    ViewBag.msg = "Employee updated successfully";
+                    msg = "Something wen wrong in the application, try aftersometimes";
+                    return msg;
                 }
             }
             else
             {
-                ViewBag.msg = "Employee updated successfully";
+                string token = _session.GetString("token");
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                if (token != null)
+                {
+                    StudentRepoAPI studentRepoapi = new StudentRepoAPI();
+                    WebApplication_Shared_Services.Model.Student std = new WebApplication_Shared_Services.Model.Student();
+                    std.ID = stud.ID;
+                    std.Name = stud.Name;
+                    std.Address = stud.Address;
+                    std.Role = stud.Role;
+                    std.Department = stud.Department;
+                    std.Email = stud.Email;
+                    //std.DOB = stud.DOB;
+                    //std.DOJ = stud.DOJ;
+                    stud.DOB = stud.DOB.Replace('-', '/');
+                    stud.DOJ = stud.DOJ.Replace('-', '/');
+                    std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
+                    std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
+
+                    status = studentRepoapi.UpdateStudent(std, token).Result;
+                }
+                if (status == "200")
+                {
+                    msg = "Employee updated successfully";
+                    return msg;
+                }
+                else if (status == "401")
+                {
+                    msg = "Unauthorized access";
+                    return msg;
+                }
+                else
+                {
+                    msg = "Something wen wrong in the application, try aftersometimes";
+                    return msg;
+                }
             }
-            return View("AddEmployee");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
