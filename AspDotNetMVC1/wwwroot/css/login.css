@@ -207,7 +207,7 @@ td, th {
     position: relative !important;
     left: 410px !important;
     top: 16px !important;
-    background-color: #fcbd6f; /* Green */
+    background-color: #44db4a; /* Green */
     border: none;
     color: black;
     padding: 15px 32px;
@@ -218,12 +218,12 @@ td, th {
 }
 
     .buttontblAdd:hover {
-        background-color: #ff8c00;
+        background-color: #329c36;
         color: white;
     }
 
 .buttontbl {
-    background-color: #fcbd6f; /* Green */
+    background-color: #44db4a; /* Green */
     border: none;
     color: black;
     padding: 8px 16spx;
@@ -234,6 +234,6 @@ td, th {
 }
 
     .buttontbl:hover {
-        background-color: #ff8c00;
+        background-color: #329c36;
         color: white;
     }
