@@ -21,6 +21,41 @@ namespace AspDotNetMVC1.ConsumeAPI
             return changedfromatdate;
 
         }
+
+        public async Task<UserRoleModel> GetMyRole(string userid, string token)
+        {
+            UserRoleModel userRolelist = new UserRoleModel();
+            string Baseurl = "https://localhost:44379/api/";
+            using (var client = new HttpClient())
+            {
+                //Passing service base url
+                client.BaseAddress = new Uri(Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                //Sending request to find web api REST service resource Gettoken using HttpClient
+                var result = client.GetAsync("UserRole/GetMyRole/"+ userid).Result;
+                //Checking the response is successful or not which is sent using HttpClient
+                if (result.IsSuccessStatusCode)
+                {
+                    //Storing the response details recieved from web api
+                    var getAllStudentString = result.Content.ReadAsStringAsync().Result;
+                    //Deserializing the response recieved from web api and storing into the Employee list
+                    userRolelist.userRole = JsonConvert.DeserializeObject<List<UserRole>>(getAllStudentString);
+                    userRolelist.status = "200";
+                }
+                else
+                {
+                    userRolelist.userRole = null;
+                    userRolelist.status = "401";
+                }
+                //returning the employee list to view
+                return userRolelist;
+            }
+        }
+
         public async Task<StudentList> GetStudents(string token)
         {
             StudentList stdlist = new StudentList();
@@ -177,7 +212,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-               
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.DeleteAsync("Student/DeleteStudent/" + id).Result;

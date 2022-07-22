@@ -44,6 +44,12 @@ namespace AspDotNetMVC1.Models
         public List<Student> Students { get; set; }
         public string status { get; set; }
     }
+    public class UserRoleModel
+    {
+        public List<UserRole> userRole { get; set; }
+        public string status { get; set; }
+    }
+
 
     public class StudentModel
     {

@@ -38,7 +38,7 @@ namespace AspDotNetMVC1.Controllers
                 HttpContext.Session.SetString("UserID", loginModel.login.username);
                 HttpContext.Session.SetString("token", token.token);
 
-                return RedirectToAction("GetEmployeeList", "Employee");
+                return RedirectToAction("GetDashboard", "Employee");
             }
             else
 
