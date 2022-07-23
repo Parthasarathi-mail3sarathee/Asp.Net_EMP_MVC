@@ -18,7 +18,8 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.Name)
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Name, new { @id="txtName" , @class = "form-control" })
+                    <span id="validTxtName" class="msg"></span>
                 </div>
 
             </div>
@@ -26,7 +27,7 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.Address)
-                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Address, new { @id="txtAdrs" ,  @class = "form-control" })
                 </div>
             </div>
         </div> <div class="rowform">
@@ -34,7 +35,7 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.Role)
-                    @Html.TextBoxFor(m => m.Role, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Role, new { @id="txtrole" ,@class = "form-control" })
                 </div>
 
             </div>
@@ -42,7 +43,7 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.Department)
-                    @Html.TextBoxFor(m => m.Department, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Department, new { @id="txtdpt" , @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -51,7 +52,7 @@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Email, new { @id="txtEmail", @class = "form-control" })
                 </div>
 
             </div>

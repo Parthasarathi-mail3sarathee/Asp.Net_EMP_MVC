@@ -73,7 +73,7 @@ jQuery(document).ready(function ($) {
         changeyear: true,
     });
 
-    
+
     //$(".btnEdit").click(function (e) {
     //    // avoid to execute the actual submit of the form.
     //    var id = $(this).attr('id');
@@ -90,20 +90,55 @@ jQuery(document).ready(function ($) {
     //    alert(word);
     //});
 
+    function validate() {
+        var isValid = false;
+        alert("Validation start");
+        var val = $('#txtName').value;
+        alert(val);
+        if (val == '') {
+            alert("Validation start");
+            $('#validTxtName').text("Name field is required");
+            isValid = false;
+        }
+        return isValid;
+    }
+
     $("#btnSave").click(function (e) {
         // avoid to execute the actual submit of the form.
-        var form = $("#frmAddEmp");
-        var data1 = form.serialize();
-        $.ajax({
-            type: "POST",
-            url: "../Employee/SaveEmployee",
-            data: data1, // serializes the form's elements.
-            success: function (data) { // show response from the php script.
-                $(".msgInner").text(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
-            }       
+        var isValid = true;
+        $('#txtName,#txtAdrs,#txtrole,#txtdpt,#txtEmail,#txtDOB,#txtDOJ').each(function () {
+            if ($.trim($(this).val()) == '') {
+                isValid = false;
+                $(this).css({
+                    "border": "1px solid red",
+                    "background": "#FFCECE"
+                });
+            }
+            else {
+                $(this).css({
+                    "border": "",
+                    "background": ""
+                });
+            }
         });
+        if (isValid == false) {
+            e.preventDefault();
+        }
+        else {
+            var form = $("#frmAddEmp");
+            var data1 = form.serialize();
+            $.ajax({
+                type: "POST",
+                url: "../Employee/SaveEmployee",
+                data: data1, // serializes the form's elements.
+                success: function (data) { // show response from the php script.
+                    $(".msgInner").text(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            });
+        }
+
     });
 });
