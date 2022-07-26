@@ -150,7 +150,7 @@ form {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding:8px 16px;
+    padding: 8px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -260,6 +260,7 @@ td, th {
 .odd {
     background-color: #ceffe3;
 }
+
 .buttonlogin {
     position: relative !important;
     left: 410px !important;
@@ -278,3 +279,30 @@ td, th {
         background-color: #329c36;
         color: white;
     }
+
+.pagination {
+    display: inline-block;
+}
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+
+.ddlPgsize {
+    position: relative;
+    top: 10px;
+    width: 100px;
+}

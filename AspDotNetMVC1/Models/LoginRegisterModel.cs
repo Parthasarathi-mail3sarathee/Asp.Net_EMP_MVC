@@ -77,4 +77,11 @@ namespace AspDotNetMVC1.Models
         public string DOJ { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public class Pager
+    {
+        public int pageSize { get; set; } // record per page count
+        public int pageCount { get; set; }
+        public int currentPage { get; set; }
+    }
 }

@@ -103,6 +103,9 @@ jQuery(document).ready(function ($) {
         return isValid;
     }
 
+    function validMail(email) {
+        return email.match(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/);
+    }
     $("#btnSave").click(function (e) {
         // avoid to execute the actual submit of the form.
         var isValid = true;

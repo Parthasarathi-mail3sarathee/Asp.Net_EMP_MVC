@@ -30,6 +30,12 @@ namespace AspDotNetMVC1.Controllers
         {
             var message = _session.GetString("Test");
         }
+        public IActionResult Get_Pager()
+        {
+            return PartialView("_Pager");
+        }
+            
+
 
         public IActionResult GetDashboard()
         {
@@ -69,6 +75,16 @@ namespace AspDotNetMVC1.Controllers
             if (studentlist.status == "200")
             {
                 ViewBag.SessionSet = "true";
+
+                    // Stored procedure for fetching recoreds for particular page with minimum data
+                    //DECLARE @PageNumber AS INT
+                    //DECLARE @RowsOfPage AS INT
+                    //SET @PageNumber = 2
+                    //SET @RowsOfPage = 4
+                    //SELECT FruitName, Price FROM SampleFruits
+                    //ORDER BY Price
+                    //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
+                    //FETCH NEXT @RowsOfPage ROWS ONLY
                 return View("EmployeeList");
             }
             else if (studentlist.status == "401")

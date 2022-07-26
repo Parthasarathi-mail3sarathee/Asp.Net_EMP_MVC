@@ -1,4 +1,4 @@
-﻿@using WebApplication_Shared_Services.Model
+﻿@using WebApplication_Shared_Services.Model;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -10,8 +10,8 @@
     <div id="div">
 
         <input type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'" />
-        
-        <span class="msgInner">@ViewBag.msg</span><br/>
+
+        <span class="msgInner">@ViewBag.msg</span><br />
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont">
             <tr>
                 <td>
@@ -65,6 +65,14 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div id="PaginationContainer">
+                        @Html.Partial("_Pager");
+                    </div>
+                </td>
+            </tr>
         </table>
+
     </div>
 </div>
