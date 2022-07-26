@@ -74,6 +74,68 @@ jQuery(document).ready(function ($) {
     });
 
 
+    $(".pgrPrv").click(function () {
+        //alert($(".ddlPgsize option:selected").text());
+        //alert($(this).text());
+        //alert($("a.active").text());
+        var currentPage = parseInt($("a.active").text(), 10) - 1;
+        var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
+        var pgCount = $("#pgCount").val();
+        alert(currentPage);
+        alert(PageSize);
+        var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
+        $.ajax({
+            type: "POST",
+            url: "../Employee/Get_Pager",
+            data: data1, // serializes the form's elements.
+            success: function (ajaxData) { // show response from the php script.
+                $('#PaginationContainer').html(ajaxData);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+        });
+
+    });
+    $(".pgrNxt").click(function () {
+        var currentPage = parseInt($("a.active").text(), 10) + 1;
+        var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
+        var pgCount = $("#pgCount").val();
+        alert(currentPage);
+        alert(PageSize);
+        var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
+        $.ajax({
+            type: "POST",
+            url: "../Employee/Get_Pager",
+            data: data1, // serializes the form's elements.
+            success: function (ajaxData) { // show response from the php script.
+                $('#PaginationContainer').html(ajaxData);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+        });
+    });
+    $(".pgr").click(function () {
+        var currentPage = parseInt($(this).text(), 10);
+        var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
+        var pgCount = $("#pgCount").val();
+        alert(currentPage);
+        alert(PageSize);
+        //$('#PaginationContainer').html(ajaxData);
+        var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
+        $.ajax({
+            type: "POST",
+            url: "../Employee/Get_Pager",
+            data: data1, // serializes the form's elements.
+            success: function (ajaxData) { // show response from the php script.
+                $('#PaginationContainer').html(ajaxData);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+        });
+    });
     //$(".btnEdit").click(function (e) {
     //    // avoid to execute the actual submit of the form.
     //    var id = $(this).attr('id');

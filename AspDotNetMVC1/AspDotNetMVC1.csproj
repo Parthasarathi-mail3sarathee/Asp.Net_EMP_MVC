@@ -17,6 +17,9 @@
     <Content Update="Views\Employee\AddEmployee.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Employee\_EmployeeList.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Employee\StudentHome.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

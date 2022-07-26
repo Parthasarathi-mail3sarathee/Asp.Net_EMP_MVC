@@ -30,9 +30,12 @@ namespace AspDotNetMVC1.Controllers
         {
             var message = _session.GetString("Test");
         }
-        public IActionResult Get_Pager()
+        public IActionResult Get_Pager(Pager pager)
         {
-            return PartialView("_Pager");
+
+            if (pager.currentPage > pager.pageCount) pager.currentPage = pager.pageCount;
+            else if (pager.currentPage < 1) pager.currentPage = 1;
+            return View("_Pager", pager);
         }
 
 
@@ -94,6 +97,7 @@ namespace AspDotNetMVC1.Controllers
                 //ORDER BY Price
                 //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
                 //FETCH NEXT @RowsOfPage ROWS ONLY
+                ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
                 return View("EmployeeList");
             }
             else if (studentlist.status == "401")

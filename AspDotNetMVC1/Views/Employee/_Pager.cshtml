@@ -1,4 +1,4 @@
-﻿
+﻿@model Pager
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -6,19 +6,32 @@
 }
 <div>
     <span class="ddlPgsize">Page Size: </span><select id="selectpagesize" name="selectpagesize" class="ddlPgsize">
-    <option>10</option> 
-    <option>20</option> 
-    <option>50</option> 
-    <option>100</option> 
-</select>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+    </select>
+    <input type="hidden" id="pgCount" value="@Model.pageCount" />
 </div>
 <div class="pagination">
-  <a href="#">&laquo;</a>
-  <a href="#">1</a>
-  <a class="active" href="#">2</a>
-  <a href="#">3</a>
-  <a href="#">4</a>
-  <a href="#">5</a>
-  <a href="#">6</a>
-  <a href="#">&raquo;</a>
+    <a href="#" class="pgrPrv">&laquo;</a>
+    @for (int indx = Model.currentPage - 5; indx < Model.currentPage; indx++)
+    {
+        if (0 < indx)
+        {
+            <a href="#" class="pgr">@indx</a>
+        }
+    }
+
+
+    <a class="active" href="#">@Model.currentPage</a>
+
+    @for (int indx = Model.currentPage + 1; indx < Model.currentPage + 5; indx++)
+    {
+        if (indx <= Model.pageCount)
+        {
+            <a href="#" class="pgr">@indx</a>
+        }
+    }
+    <a href="#" class="pgrNxt">&raquo;</a>
 </div>

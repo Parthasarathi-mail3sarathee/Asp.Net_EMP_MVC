@@ -67,6 +67,38 @@
             </tr>
             <tr>
                 <td>
+                    <div style="width:100%; height:380px; overflow-y: auto;">
+                        <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
+                            @foreach (Student std in (List<Student>)ViewBag.studentList)
+                            {
+                                <tr>
+                                    <td width="100">@std.ID</td>
+                                    <td width="100">@std.Name</td>
+                                    <td width="100">@std.Address</td>
+                                    <td width="100">@std.Role</td>
+                                    <td width="100">@std.Department</td>
+                                    <td width="100">@std.Email</td>
+                                    <td width="100">@std.DOB</td>
+                                    <td width="100">@std.DOJ</td>
+                                    <td width="100">
+                                        @if (std.SkillSets != null)
+                                        {
+                                            @string.Join(", ", std.SkillSets)
+                                            ;
+                                        }
+                                    </td>
+                                    <td width="100">  <input type="submit" id="Edit_@std.ID" value="Edit" class="buttontbl" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'" /></td>
+                                    <td width="80">  <input type="submit" id="Delete_@std.ID" value="Delete" class="buttontbl" onclick="location.href='@Url.Action("DelEmployee/"+@std.ID, "Employee")'" /></td>
+                                    <td width="20"></td>
+                                </tr>
+                            }
+
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <div id="PaginationContainer">
                         @Html.Partial("_Pager",(Pager)ViewBag.pager);
                     </div>
