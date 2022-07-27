@@ -35,11 +35,82 @@ namespace AspDotNetMVC1.Controllers
 
             if (pager.currentPage > pager.pageCount) pager.currentPage = pager.pageCount;
             else if (pager.currentPage < 1) pager.currentPage = 1;
+            ViewBag.pager = pager;
             return View("_Pager", pager);
         }
 
 
+        public IActionResult GetEmpList()
+        {
+            byte[] userId;
+            StudentList studentlist = null;
+            StudentRepoAPI studentRepoapi = new StudentRepoAPI();
+            if (_session.GetString("UserID") != null)
+            {
+                string token = _session.GetString("token");
+                if (token != null)
+                {
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    if (userrole.status == "200")
+                    {
+                        var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
+                        if (availRole != null)
+                        {
+                            studentlist = studentRepoapi.GetStudents(token).Result;
+                            ViewBag.studentList = studentlist.Students;
+                        }
+                        else
+                        {
+                            ViewBag.SessionSet = "true";
+                            return View("StudentHome");
 
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.SessionSet = "true";
+                        return View("StudentHome");
+
+                    }
+                }
+                else
+                {
+                    ViewBag.Emsg = "Unauthorized access/Session expired";
+                    return View("../Home/Index");
+                }
+            }
+            else
+            {
+                ViewBag.Emsg = "Unauthorized access/Session expired";
+                return View("../Home/Index");
+            }
+            if (studentlist.status == "200")
+            {
+                ViewBag.SessionSet = "true";
+
+                // Stored procedure for fetching recoreds for particular page with minimum data
+                //DECLARE @PageNumber AS INT
+                //DECLARE @RowsOfPage AS INT
+                //SET @PageNumber = 2
+                //SET @RowsOfPage = 4
+                //SELECT FruitName, Price FROM SampleFruits
+                //ORDER BY Price
+                //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
+                //FETCH NEXT @RowsOfPage ROWS ONLY
+                ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
+                return PartialView("_EmpList");
+            }
+            else if (studentlist.status == "401")
+            {
+                ViewBag.SessionSet = "true";
+                return View("StudentHome");
+            }
+            else
+            {
+                ViewBag.SessionSet = "false";
+                return RedirectToAction("Index", "Home");
+            }
+        }
         public IActionResult GetDashboard()
         {
             byte[] userId;

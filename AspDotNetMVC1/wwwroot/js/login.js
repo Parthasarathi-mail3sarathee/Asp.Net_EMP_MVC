@@ -73,6 +73,19 @@ jQuery(document).ready(function ($) {
         changeyear: true,
     });
 
+    function GetEmp(data1) {
+        $.ajax({
+            type: "POST",
+            url: "../Employee/GetEmpList",
+            data: data1, // serializes the form's elements.
+            success: function (ajaxData) { // show response from the php script.
+                $('#EmpListContainer').html(ajaxData);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+        });
+    }
 
     $(".pgrPrv").click(function () {
         //alert($(".ddlPgsize option:selected").text());
