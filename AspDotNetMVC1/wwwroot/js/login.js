@@ -94,7 +94,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($("a.active").text(), 10) - 1;
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-      
+
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
             type: "POST",
@@ -102,6 +102,7 @@ jQuery(document).ready(function ($) {
             data: data1, // serializes the form's elements.
             success: function (ajaxData) { // show response from the php script.
                 $('#PaginationContainer').html(ajaxData);
+                GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -113,7 +114,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($("a.active").text(), 10) + 1;
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-     
+
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
             type: "POST",
@@ -121,6 +122,7 @@ jQuery(document).ready(function ($) {
             data: data1, // serializes the form's elements.
             success: function (ajaxData) { // show response from the php script.
                 $('#PaginationContainer').html(ajaxData);
+                GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -131,7 +133,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($(this).text(), 10);
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-     
+
         //$('#PaginationContainer').html(ajaxData);
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
@@ -140,6 +142,7 @@ jQuery(document).ready(function ($) {
             data: data1, // serializes the form's elements.
             success: function (ajaxData) { // show response from the php script.
                 $('#PaginationContainer').html(ajaxData);
+                GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -154,13 +157,8 @@ jQuery(document).ready(function ($) {
     //    alert(word);
     //    $.get("../Employee/EditEmployee/" + word);
     //});
-    //$(".btnDel").click(function (e) {
-    //    // avoid to execute the actual submit of the form.
-    //    var id = $(this).attr('id');
-    //    var myArray = id.split("_");
-    //    let word = myArray[1];
-    //    alert(word);
-    //});
+
+    
 
     function validate() {
         var isValid = false;

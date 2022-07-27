@@ -40,7 +40,7 @@ namespace AspDotNetMVC1.Controllers
         }
 
 
-        public IActionResult GetEmpList()
+        public IActionResult GetEmpList(Pager pager)
         {
             byte[] userId;
             StudentList studentlist = null;
@@ -56,7 +56,10 @@ namespace AspDotNetMVC1.Controllers
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
                         if (availRole != null)
                         {
-                            studentlist = studentRepoapi.GetStudents(token).Result;
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
+
+                            //var queryResultPage = studentlist.Skip(pager.pageSize * (pager.currentPage - 1)).Take(pager.pageSize);
+
                             ViewBag.studentList = studentlist.Students;
                         }
                         else
@@ -97,7 +100,8 @@ namespace AspDotNetMVC1.Controllers
                 //ORDER BY Price
                 //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
                 //FETCH NEXT @RowsOfPage ROWS ONLY
-                ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
+                ViewBag.pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = 13 };
+                ViewBag.currentPage = pager.currentPage;
                 return PartialView("_EmpList");
             }
             else if (studentlist.status == "401")
@@ -114,6 +118,7 @@ namespace AspDotNetMVC1.Controllers
         public IActionResult GetDashboard()
         {
             byte[] userId;
+            Pager pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
             StudentList studentlist = null;
             StudentRepoAPI studentRepoapi = new StudentRepoAPI();
             if (_session.GetString("UserID") != null)
@@ -127,7 +132,8 @@ namespace AspDotNetMVC1.Controllers
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
                         if (availRole != null)
                         {
-                            studentlist = studentRepoapi.GetStudents(token).Result;
+                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token).Result;
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
                             ViewBag.studentList = studentlist.Students;
                         }
                         else
@@ -168,7 +174,8 @@ namespace AspDotNetMVC1.Controllers
                 //ORDER BY Price
                 //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
                 //FETCH NEXT @RowsOfPage ROWS ONLY
-                ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
+                ViewBag.pager = pager;
+                ViewBag.currentPage = pager.currentPage;
                 return View("EmployeeList");
             }
             else if (studentlist.status == "401")
@@ -293,6 +300,8 @@ namespace AspDotNetMVC1.Controllers
 
         public IActionResult DelEmployee(int id)
         {
+
+            Pager pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
             StudentRepoAPI studentRepoapi = new StudentRepoAPI();
             if (_session.GetString("UserID") != null)
             {
@@ -307,10 +316,13 @@ namespace AspDotNetMVC1.Controllers
                         {
                             StudentList studentlist = null;
                             var stud = studentRepoapi.DelStudent(id, token);
-                            studentlist = studentRepoapi.GetStudents(token).Result;
+                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token).Result;
+                            
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
                             ViewBag.studentList = studentlist.Students;
 
-                            ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
+                            ViewBag.pager = pager;
+                            ViewBag.currentPage = pager.currentPage;
                             ViewBag.msg = "Employee deleted sucessfully (id:" + id + ")";
                             return View("EmployeeList");
                         }
