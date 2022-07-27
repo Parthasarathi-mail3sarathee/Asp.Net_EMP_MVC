@@ -238,6 +238,8 @@ namespace AspDotNetMVC1.Controllers
                             var stud = studentRepoapi.DelStudent(id, token);
                             studentlist = studentRepoapi.GetStudents(token).Result;
                             ViewBag.studentList = studentlist.Students;
+
+                            ViewBag.pager = new Pager() { pageSize = 10, currentPage = 50, pageCount = 50 };
                             ViewBag.msg = "Employee deleted sucessfully (id:" + id + ")";
                             return View("EmployeeList");
                         }

@@ -81,8 +81,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($("a.active").text(), 10) - 1;
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-        alert(currentPage);
-        alert(PageSize);
+      
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
             type: "POST",
@@ -101,8 +100,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($("a.active").text(), 10) + 1;
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-        alert(currentPage);
-        alert(PageSize);
+     
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
             type: "POST",
@@ -120,8 +118,7 @@ jQuery(document).ready(function ($) {
         var currentPage = parseInt($(this).text(), 10);
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
-        alert(currentPage);
-        alert(PageSize);
+     
         //$('#PaginationContainer').html(ajaxData);
         var data1 = { currentPage: currentPage, PageSize: PageSize, pageCount: pgCount }
         $.ajax({
