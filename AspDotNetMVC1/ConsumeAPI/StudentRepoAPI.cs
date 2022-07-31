@@ -11,18 +11,8 @@ namespace AspDotNetMVC1.ConsumeAPI
 {
     public class StudentRepoAPI
     {
-        public string dateformatChange(string dateString)
-        {
-            string changedfromatdate = string.Empty;
-            if (dateString.Contains("/"))
-            {
 
-            }
-            return changedfromatdate;
-
-        }
-
-        public async Task<UserRoleModel> GetMyRole(string userid, string token)
+        public  UserRoleModel GetMyRole(string userid, string token)
         {
             UserRoleModel userRolelist = new UserRoleModel();
             string Baseurl = "https://localhost:44379/api/";
@@ -58,7 +48,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public async Task<Pager> GetStudentPageCount(Pager pager, string token)
+        public  Pager GetStudentPageCount(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
@@ -95,7 +85,7 @@ namespace AspDotNetMVC1.ConsumeAPI
         }
 
 
-        public async Task<StudentList> GetStudentsPerPage(Pager pager, string token)
+        public  StudentList GetStudentsPerPage(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
@@ -131,7 +121,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public async Task<StudentList> GetStudents(string token)
+        public  StudentList GetStudents(string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
@@ -203,7 +193,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public async Task<string> AddStudent(Student std, string token)
+        public  string AddStudent(Student std, string token)
         {
             Student std1;
             string status = string.Empty;
@@ -244,7 +234,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public async Task<string> UpdateStudent(Student std, string token)
+        public string UpdateStudent(Student std, string token)
         {
             Student std1;
             string status = string.Empty;
@@ -286,7 +276,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 
         }
 
-        public async Task<string> DelStudent(int id, string token)
+        public  string DelStudent(int id, string token)
         {
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";

@@ -9,17 +9,23 @@ using Microsoft.AspNetCore.Authorization;
 using AspDotNetMVC1.ConsumeAPI;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using AspDotNetMVC1.SharedService;
+using System.IO;
 
 namespace AspDotNetMVC1.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILoggers _logger;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public EmployeeController(IHttpContextAccessor httpContextAccessor)
+        public EmployeeController(IHttpContextAccessor httpContextAccessor, ILoggers logger)
         {
+            var path = Directory.GetCurrentDirectory();
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
+            _logger.setFileLog($"{path}\\logs\\logger_" + DateTime.Now.ToString("dd_MM_yy") + ".txt");
         }
         public void TestSet()
         {
@@ -32,7 +38,7 @@ namespace AspDotNetMVC1.Controllers
         }
         public IActionResult Get_Pager(Pager pager)
         {
-
+            _logger.WriteLog("Log Started"+ pager.ToString());
             if (pager.currentPage > pager.pageCount) pager.currentPage = pager.pageCount;
             else if (pager.currentPage < 1) pager.currentPage = 1;
             ViewBag.pager = pager;
@@ -50,13 +56,13 @@ namespace AspDotNetMVC1.Controllers
                 string token = _session.GetString("token");
                 if (token != null)
                 {
-                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token);
                     if (userrole.status == "200")
                     {
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
                         if (availRole != null)
                         {
-                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token);
 
                             //var queryResultPage = studentlist.Skip(pager.pageSize * (pager.currentPage - 1)).Take(pager.pageSize);
 
@@ -126,14 +132,14 @@ namespace AspDotNetMVC1.Controllers
                 string token = _session.GetString("token");
                 if (token != null)
                 {
-                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token);
                     if (userrole.status == "200")
                     {
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
                         if (availRole != null)
                         {
-                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token).Result;
-                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
+                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token);
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token);
                             ViewBag.studentList = studentlist.Students;
                         }
                         else
@@ -198,7 +204,7 @@ namespace AspDotNetMVC1.Controllers
                 string token = _session.GetString("token");
                 if (token != null)
                 {
-                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token);
                     if (userrole.status == "200")
                     {
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
@@ -241,7 +247,7 @@ namespace AspDotNetMVC1.Controllers
                 string token = _session.GetString("token");
                 if (token != null)
                 {
-                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token);
                     if (userrole.status == "200")
                     {
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
@@ -308,7 +314,7 @@ namespace AspDotNetMVC1.Controllers
                 string token = _session.GetString("token");
                 if (token != null)
                 {
-                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token).Result;
+                    var userrole = studentRepoapi.GetMyRole(_session.GetString("UserID"), token);
                     if (userrole.status == "200")
                     {
                         var availRole = userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
@@ -316,9 +322,9 @@ namespace AspDotNetMVC1.Controllers
                         {
                             StudentList studentlist = null;
                             var stud = studentRepoapi.DelStudent(id, token);
-                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token).Result;
+                            if (pager.pageCount == -1) pager = studentRepoapi.GetStudentPageCount(pager, token);
                             
-                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token).Result;
+                            studentlist = studentRepoapi.GetStudentsPerPage(pager, token);
                             ViewBag.studentList = studentlist.Students;
 
                             ViewBag.pager = pager;
@@ -376,7 +382,7 @@ namespace AspDotNetMVC1.Controllers
                     std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                     std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
 
-                    status = studentRepoapi.AddStudent(std, token).Result;
+                    status = studentRepoapi.AddStudent(std, token);
                 }
                 if (status == "200")
                 {
@@ -414,7 +420,7 @@ namespace AspDotNetMVC1.Controllers
                     std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                     std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
 
-                    status = studentRepoapi.UpdateStudent(std, token).Result;
+                    status = studentRepoapi.UpdateStudent(std, token);
                 }
                 if (status == "200")
                 {
