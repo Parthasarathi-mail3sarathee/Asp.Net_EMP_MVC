@@ -22,6 +22,9 @@ namespace AspDotNetMVC1.ConsumeAPI
                     client.DefaultRequestHeaders.Clear();
                     //Define request data format
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
+                   
+
                     var myContent = JsonConvert.SerializeObject(login);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                     var byteContent = new ByteArrayContent(buffer);
