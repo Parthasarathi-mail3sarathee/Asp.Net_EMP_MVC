@@ -70,7 +70,7 @@ namespace AspDotNetMVC1.Models
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
         public List<string> SkillSets { get; set; }
-      
+
         [Display(Name = "Date Of Birth")]
         public string DOB { get; set; }
         [Display(Name = "Date Of Joining")]
@@ -83,5 +83,21 @@ namespace AspDotNetMVC1.Models
         public int pageSize { get; set; } // record per page count
         public int pageCount { get; set; }
         public int currentPage { get; set; }
+    }
+
+    public class SessionStatus
+    {
+        public string token { get; set; }
+        public UserRoleModel userrole { get; set; }
+        public bool IsValidUser { get; set; }
+        public bool SessionSet { get; set; }
+        public string Emsg { get; set; }
+    }
+
+    public class ApiKey
+    {
+        public string ClientKeyHeader { get; set; }
+        public string ClientKey { get; set; }
+
     }
 }

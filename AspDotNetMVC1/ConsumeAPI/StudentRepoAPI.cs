@@ -1,4 +1,5 @@
 ﻿using AspDotNetMVC1.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,31 @@ using WebApplication_Shared_Services.Model;
 
 namespace AspDotNetMVC1.ConsumeAPI
 {
-    public class StudentRepoAPI
+    public interface IStudentRepoAPI
     {
+        UserRoleModel GetMyRole(string userid, string token);
+        Pager GetStudentPageCount(Pager pager, string token);
+        StudentList GetStudentsPerPage(Pager pager, string token);
+        StudentList GetStudents(string token);
+        StudentModel GetStudentByID(int id, string token);
+        string AddStudent(Student std, string token);
+        string UpdateStudent(Student std, string token);
+        string DelStudent(int id, string token);
 
-        public  UserRoleModel GetMyRole(string userid, string token)
+    }
+    public class StudentRepoAPI : IStudentRepoAPI
+    {
+        IConfiguration configuration;
+
+        public StudentRepoAPI(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+        public UserRoleModel GetMyRole(string userid, string token)
         {
             UserRoleModel userRolelist = new UserRoleModel();
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -24,8 +43,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.GetAsync("UserRole/GetMyRole/" + userid).Result;
@@ -48,10 +67,11 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public  Pager GetStudentPageCount(Pager pager, string token)
+        public Pager GetStudentPageCount(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -60,8 +80,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.GetAsync("Student/GetStudentPageCount/" + pager.pageSize).Result;
@@ -85,10 +105,11 @@ namespace AspDotNetMVC1.ConsumeAPI
         }
 
 
-        public  StudentList GetStudentsPerPage(Pager pager, string token)
+        public StudentList GetStudentsPerPage(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -97,8 +118,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.GetAsync("Student/GetStudentPerPage/" + pager.currentPage + "/" + pager.pageSize).Result;
@@ -121,10 +142,11 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public  StudentList GetStudents(string token)
+        public StudentList GetStudents(string token)
         {
             StudentList stdlist = new StudentList();
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -133,8 +155,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.GetAsync("Student/Getall").Result;
@@ -163,6 +185,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             Student std1;
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -171,8 +194,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 var result = client.GetAsync("Student/GetByID/" + id).Result;
                 //Checking the response is successful or not which is sent using HttpClient
@@ -193,11 +216,12 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public  string AddStudent(Student std, string token)
+        public string AddStudent(Student std, string token)
         {
             Student std1;
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -206,8 +230,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 var myContent = JsonConvert.SerializeObject(std);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
@@ -239,6 +263,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             Student std1;
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -247,8 +272,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 var myContent = JsonConvert.SerializeObject(std);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
@@ -276,10 +301,11 @@ namespace AspDotNetMVC1.ConsumeAPI
 
         }
 
-        public  string DelStudent(int id, string token)
+        public string DelStudent(int id, string token)
         {
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -288,8 +314,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
                 var result = client.DeleteAsync("Student/DeleteStudent/" + id).Result;

@@ -14,10 +14,12 @@ namespace AspDotNetMVC1.Controllers
     public class HomeController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAuthenticateUserAPI _authenticateUserAPI;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
-        public HomeController(IHttpContextAccessor httpContextAccessor)
+        public HomeController(IHttpContextAccessor httpContextAccessor, IAuthenticateUserAPI authenticateUserAPI)
         {
             _httpContextAccessor = httpContextAccessor;
+            _authenticateUserAPI = authenticateUserAPI;
         }
         public IActionResult Index()
         {
@@ -27,11 +29,10 @@ namespace AspDotNetMVC1.Controllers
         [HttpPost]
         public IActionResult Login(LoginRegisterModel loginModel)
         {
-            AuthenticateUserAPI authUser = new AuthenticateUserAPI();
             WebApplication_Shared_Services.Model.Login login = new WebApplication_Shared_Services.Model.Login();
             login.username = loginModel.login.username;
             login.password = loginModel.login.password;
-            Token token = authUser.GetLogin(login).Result;
+            Token token = _authenticateUserAPI.GetLogin(login).Result;
             if (token != null)
             {
                 ViewBag.NotValidUser = "false";

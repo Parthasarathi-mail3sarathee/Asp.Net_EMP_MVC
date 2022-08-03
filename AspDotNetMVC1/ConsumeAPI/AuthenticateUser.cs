@@ -4,15 +4,30 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using AspDotNetMVC1.Models;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace AspDotNetMVC1.ConsumeAPI
 {
-    public class AuthenticateUserAPI
+    public interface IAuthenticateUserAPI
     {
+        Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login);
+    }
+    public class AuthenticateUserAPI : IAuthenticateUserAPI
+    {
+
+        IConfiguration configuration;
+
+        public AuthenticateUserAPI(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public async Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login)
         {
             Token token = null;
             string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+
             try
             {
                 using (var client = new HttpClient())
@@ -22,8 +37,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                     client.DefaultRequestHeaders.Clear();
                     //Define request data format
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.DefaultRequestHeaders.Add("XApiKeys", "pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp");
-                   
+                    client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
 
                     var myContent = JsonConvert.SerializeObject(login);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
@@ -44,7 +59,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                     return token;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
