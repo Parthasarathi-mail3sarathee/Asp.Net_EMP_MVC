@@ -73,6 +73,21 @@
                 </div>
             </div>
             <div class="columnform">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SkillSets)
+                    <input type="text" id="txtSkill" name="txtSkill" /><button type="button" id="tbnskilladd" name="tbnskilladd">+</button>
+                    <div id="DivSkillset">
+                        @if (Model.SkillSets != null)
+                        {
+                            foreach (var skill in Model.SkillSets)
+                            {
+                                <span class="skilsetSpan">@skill <button type="button" class="removeSkill">X</button></span>
+                            }
+
+                        }
+
+                    </div>
+                </div>
             </div>
         </div>
         <div class="rowform odd">

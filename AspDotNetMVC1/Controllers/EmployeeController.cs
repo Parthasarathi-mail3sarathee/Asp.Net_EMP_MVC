@@ -236,6 +236,7 @@ namespace AspDotNetMVC1.Controllers
                 //std.DOJ = stud.Student.DOJ;
                 stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
                 stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
+                stdvm.SkillSets = stud.Student.SkillSets;
                 if (stud.status == "200")
                 {
                     return View("AddEmployee", stdvm);
@@ -323,7 +324,7 @@ namespace AspDotNetMVC1.Controllers
                         //std.DOJ = stud.DOJ;
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
-
+                        std.SkillSets = stud.SkillSets;
                         status = _studentRepoAPI.AddStudent(std, token);
                     }
                     if (status == "200")
@@ -361,7 +362,7 @@ namespace AspDotNetMVC1.Controllers
                         stud.DOJ = stud.DOJ.Replace('-', '/');
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
-
+                        std.SkillSets = stud.SkillSets;
                         status = _studentRepoAPI.UpdateStudent(std, token);
                     }
                     if (status == "200")

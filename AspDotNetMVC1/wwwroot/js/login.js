@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
     //    $.get("../Employee/EditEmployee/" + word);
     //});
 
-    
+
 
     function validate() {
         var isValid = false;
@@ -176,11 +176,52 @@ jQuery(document).ready(function ($) {
     function validMail(email) {
         return email.match(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/);
     }
+    $("#tbnskilladd").click(function (e) {
+        e.preventDefault();
+        var skill = $("#txtSkill").val();
+        if (skill != '') {
+            $("#DivSkillset").append('<span class="skilsetSpan">' + skill + ' <button type="button" class="removeSkill">X</button></span>');
+            $("#txtSkill").val('');
+        }
+    });
+
+    // This is for dynamically added button at client side
+    $(document).on('click', '.removeSkill', function () {
+        var ele = $(this).parent();
+        ele.remove();
+        // Your Code
+    })
+    function getSkills() {
+        var skilset = [];
+        var spanitem = $("#DivSkillset").children("span.skilsetSpan");
+        var length = spanitem.filter('span').length;
+        spanitem.each(function (index) {
+            var txt = $(this).text().split(" ");
+            skilset.push(txt[0]);
+        });
+        return skilset;
+    }
+
     $("#btnSave").click(function (e) {
         // avoid to execute the actual submit of the form.
         var isValid = true;
+        var skilset = getSkills();
+        if (skilset.length < 1) {
+            isValid = false;
+            $("#txtSkill").css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
+            });
+        } else {
+            $("#txtSkill").css({
+                "border": "",
+                "background": ""
+            });
+        }
         $('#txtName,#txtAdrs,#txtrole,#txtdpt,#txtEmail,#txtDOB,#txtDOJ').each(function () {
+
             if ($.trim($(this).val()) == '') {
+
                 isValid = false;
                 $(this).css({
                     "border": "1px solid red",
@@ -199,11 +240,33 @@ jQuery(document).ready(function ($) {
         }
         else {
             var form = $("#frmAddEmp");
+            var name = $("#txtName").val();
+            var id = $("#ID").val();
+            var address = $("#txtAdrs").val();
+            var role = $("#txtrole").val();
+            var dept = $("#txtdpt").val();
+            var emails = $("#txtEmail").val();
+            var dob = $("#txtDOB").val();
+            var doj = $("#txtDOJ").val();
+            var skilset = getSkills();
+
             var data1 = form.serialize();
+            var data2 = {
+                ID: id,
+                Name: name,
+                Address: address,
+                Role: role,
+                Department: dept,
+                Email: emails,
+                DOB: dob,
+                DOJ: doj,
+                SkillSets: skilset
+
+            }
             $.ajax({
                 type: "POST",
                 url: "../Employee/SaveEmployee",
-                data: data1, // serializes the form's elements.
+                data: data2, // serializes the form's elements.
                 success: function (data) { // show response from the php script.
                     $(".msgInner").text(data);
                 },

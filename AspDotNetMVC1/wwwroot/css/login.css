@@ -306,3 +306,8 @@ td, th {
     top: 10px;
     width: 100px;
 }
+
+.skilsetSpan {
+    border: solid grey;
+    margin: 1px;
+}
