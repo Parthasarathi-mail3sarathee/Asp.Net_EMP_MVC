@@ -218,7 +218,21 @@ jQuery(document).ready(function ($) {
                 "background": ""
             });
         }
-        $('#txtName,#txtAdrs,#txtrole,#txtdpt,#txtEmail,#txtDOB,#txtDOJ').each(function () {
+        var email = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+        if ($("#txtEmail").val() == '' || !email.test($("#txtEmail").val())) {
+            isValid = false;
+            $("#txtEmail").css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
+            });
+        }
+        else {
+            $("#txtEmail").css({
+                "border": "",
+                "background": ""
+            });
+        }
+        $('#txtName,#txtAdrs,#txtrole,#txtdpt,#txtDOB,#txtDOJ').each(function () {
 
             if ($.trim($(this).val()) == '') {
 
@@ -240,7 +254,7 @@ jQuery(document).ready(function ($) {
         }
         else {
 
-            var formData = new FormData();
+            var formData = new FormData();// for file upload multipart form data
             var form = $("#frmAddEmp");
             var name = $("#txtName").val();
             var id = $("#ID").val();
@@ -255,7 +269,7 @@ jQuery(document).ready(function ($) {
                 formData.append('profileFile', $("#profileFile").get(0).files[i]);
             }
 
-           // formData.append('SkillSets', skilset); // will be worked as comma seperated ".Net,java,spring"
+            // formData.append('SkillSets', skilset); // will be worked as comma seperated ".Net,java,spring"
             for (var i = 0; i < skilset.length; ++i) {
                 formData.append('SkillSets', skilset[i]);// will be take it as a list object in server side
             }

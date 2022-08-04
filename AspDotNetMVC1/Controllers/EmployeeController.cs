@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using AspDotNetMVC1.SharedService;
 using System.IO;
+using WebApplication_Shared_Services.Model;
 
 namespace AspDotNetMVC1.Controllers
 {
@@ -267,7 +268,7 @@ namespace AspDotNetMVC1.Controllers
         {
 
             Pager pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
-            
+
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
@@ -301,6 +302,7 @@ namespace AspDotNetMVC1.Controllers
         [HttpPost]
         public string SaveEmployee(StudentViewModel stud)
         {
+            StudentProfile stdPrfo = new StudentProfile();
             string status = string.Empty;
             string msg = string.Empty;
             var sessionstate = CheckSessionAndUserRole();
@@ -325,7 +327,18 @@ namespace AspDotNetMVC1.Controllers
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
                         std.SkillSets = stud.SkillSets;
+                        stdPrfo.profileFile = stud.profileFile;
                         status = _studentRepoAPI.AddStudent(std, token);
+                        if (status.Contains("200:"))
+                        {
+                            var statusval = status.Split(':');
+                            int.TryParse(statusval[1], out int idval);
+                            if (stdPrfo?.profileFile?.Count > 0)
+                            {
+                                _studentRepoAPI.AddStudentProfile(idval, stdPrfo.profileFile, token);
+                            }
+                            status = statusval[0];
+                        }
                     }
                     if (status == "200")
                     {
@@ -363,7 +376,18 @@ namespace AspDotNetMVC1.Controllers
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
                         std.SkillSets = stud.SkillSets;
+                        stdPrfo.profileFile = stud.profileFile;
                         status = _studentRepoAPI.UpdateStudent(std, token);
+                        if (status.Contains("200:"))
+                        {
+                            var statusval = status.Split(':');
+                            int.TryParse(statusval[1], out int idval);
+                            if (stdPrfo?.profileFile?.Count > 0)
+                            {
+                                _studentRepoAPI.updateStudentProfile(idval, stdPrfo.profileFile, token);
+                            }
+                            status = statusval[0];
+                        }
                     }
                     if (status == "200")
                     {

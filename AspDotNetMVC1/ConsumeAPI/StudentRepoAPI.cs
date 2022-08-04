@@ -1,8 +1,10 @@
 ﻿using AspDotNetMVC1.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -18,7 +20,9 @@ namespace AspDotNetMVC1.ConsumeAPI
         StudentList GetStudents(string token);
         StudentModel GetStudentByID(int id, string token);
         string AddStudent(Student std, string token);
+        string AddStudentProfile(int id, IList<IFormFile> stdprofile, string token);
         string UpdateStudent(Student std, string token);
+        string UpdateStudentProfile(int id, IList<IFormFile> stdprofile, string token);
         string DelStudent(int id, string token);
 
     }
@@ -103,7 +107,6 @@ namespace AspDotNetMVC1.ConsumeAPI
                 return pager;
             }
         }
-
 
         public StudentList GetStudentsPerPage(Pager pager, string token)
         {
@@ -215,10 +218,65 @@ namespace AspDotNetMVC1.ConsumeAPI
                 return stdMdl;
             }
         }
-
-        public string AddStudent(Student std, string token)
+        public string AddStudentProfile(int id, IList<IFormFile> stdprofile, string token)
         {
             Student std1;
+            string status = string.Empty;
+            string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
+
+                using (var content = new MultipartFormDataContent())
+                {
+                    ByteArrayContent byteArrayContent = null;
+                    foreach (var filestd in stdprofile)
+                    {
+                        if (filestd.Length > 0)
+                        {
+                            using (var ms = new MemoryStream())
+                            {
+                                filestd.CopyTo(ms);
+                                var fileBytes = ms.ToArray();
+                                //string s = Convert.ToBase64String(fileBytes);
+                                // act on the Base64 data
+                                byteArrayContent = new ByteArrayContent(fileBytes);
+
+                            }
+                        }
+                        content.Add(byteArrayContent, "profileFile", filestd.FileName);
+                    }
+                    var result = client.PostAsync("Student/AddStudentProfile/" + id, content).Result;
+                    //Checking the response is successful or not which is sent using HttpClient
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //Storing the response details recieved from web api
+                        var respString = result.Content.ReadAsStringAsync().Result;
+                        //Deserializing the response recieved from web api and storing into the Employee list
+                        var respstatus = JsonConvert.DeserializeObject<string>(respString);
+                        status = "200";
+                    }
+                    else
+                    {
+                        status = "401";
+                    }
+                    //returning the employee list to view
+                    return status;
+
+                }
+
+            }
+        }
+        public string AddStudent(Student std, string token)
+        {
             string status = string.Empty;
             string Baseurl = "https://localhost:44379/api/";
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
@@ -246,8 +304,8 @@ namespace AspDotNetMVC1.ConsumeAPI
                     //Storing the response details recieved from web api
                     var tokenString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    std1 = JsonConvert.DeserializeObject<Student>(tokenString);
-                    status = "200";
+                    std = JsonConvert.DeserializeObject<Student>(tokenString);
+                    status = "200:" + std.ID;
                 }
                 else
                 {
@@ -255,6 +313,63 @@ namespace AspDotNetMVC1.ConsumeAPI
                 }
                 //returning the employee list to view
                 return status;
+            }
+        }
+        public string UpdateStudentProfile(int id, IList<IFormFile> stdprofile, string token)
+        {
+            Student std1;
+            string status = string.Empty;
+            string Baseurl = "https://localhost:44379/api/";
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+
+
+                using (var content = new MultipartFormDataContent())
+                {
+                    ByteArrayContent byteArrayContent = null;
+                    foreach (var filestd in stdprofile)
+                    {
+                        if (filestd.Length > 0)
+                        {
+                            using (var ms = new MemoryStream())
+                            {
+                                filestd.CopyTo(ms);
+                                var fileBytes = ms.ToArray();
+                                //string s = Convert.ToBase64String(fileBytes);
+                                // act on the Base64 data
+                                byteArrayContent = new ByteArrayContent(fileBytes);
+
+                            }
+                        }
+                        content.Add(byteArrayContent, "profileFile", filestd.FileName);
+                    }
+                    var result = client.PostAsync("Student/UpdateStudentProfile/" + id, content).Result;
+                    //Checking the response is successful or not which is sent using HttpClient
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //Storing the response details recieved from web api
+                        var respString = result.Content.ReadAsStringAsync().Result;
+                        //Deserializing the response recieved from web api and storing into the Employee list
+                        var respstatus = JsonConvert.DeserializeObject<string>(respString);
+                        status = "200";
+                    }
+                    else
+                    {
+                        status = "401";
+                    }
+                    //returning the employee list to view
+                    return status;
+
+                }
+
             }
         }
 
