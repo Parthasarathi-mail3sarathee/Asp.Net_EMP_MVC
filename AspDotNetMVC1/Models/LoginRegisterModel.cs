@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -70,6 +71,7 @@ namespace AspDotNetMVC1.Models
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
         public List<string> SkillSets { get; set; }
+        public List<IFormFile> profileFile { get; set; }
 
         [Display(Name = "Date Of Birth")]
         public string DOB { get; set; }

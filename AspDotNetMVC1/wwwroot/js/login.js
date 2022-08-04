@@ -239,6 +239,8 @@ jQuery(document).ready(function ($) {
             e.preventDefault();
         }
         else {
+
+            var formData = new FormData();
             var form = $("#frmAddEmp");
             var name = $("#txtName").val();
             var id = $("#ID").val();
@@ -249,24 +251,31 @@ jQuery(document).ready(function ($) {
             var dob = $("#txtDOB").val();
             var doj = $("#txtDOJ").val();
             var skilset = getSkills();
-
-            var data1 = form.serialize();
-            var data2 = {
-                ID: id,
-                Name: name,
-                Address: address,
-                Role: role,
-                Department: dept,
-                Email: emails,
-                DOB: dob,
-                DOJ: doj,
-                SkillSets: skilset
-
+            for (var i = 0; i < $("#profileFile").get(0).files.length; ++i) {
+                formData.append('profileFile', $("#profileFile").get(0).files[i]);
             }
+
+           // formData.append('SkillSets', skilset); // will be worked as comma seperated ".Net,java,spring"
+            for (var i = 0; i < skilset.length; ++i) {
+                formData.append('SkillSets', skilset[i]);// will be take it as a list object in server side
+            }
+
+            formData.append('ID', id);
+            formData.append('Name', name);
+            formData.append('Address', address);
+            formData.append('Role', role);
+            formData.append('Department', dept);
+            formData.append('Email', emails);
+            formData.append('DOB', dob);
+            formData.append('DOJ', doj);
+
             $.ajax({
                 type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
                 url: "../Employee/SaveEmployee",
-                data: data2, // serializes the form's elements.
+                data: formData, // serializes the form's elements.
                 success: function (data) { // show response from the php script.
                     $(".msgInner").text(data);
                 },
