@@ -378,16 +378,8 @@ namespace AspDotNetMVC1.Controllers
                         std.SkillSets = stud.SkillSets;
                         stdPrfo.profileFile = stud.profileFile;
                         status = _studentRepoAPI.UpdateStudent(std, token);
-                        if (status.Contains("200:"))
-                        {
-                            var statusval = status.Split(':');
-                            int.TryParse(statusval[1], out int idval);
-                            if (stdPrfo?.profileFile?.Count > 0)
-                            {
-                                _studentRepoAPI.updateStudentProfile(idval, stdPrfo.profileFile, token);
-                            }
-                            status = statusval[0];
-                        }
+                        _studentRepoAPI.AddStudentProfile(std.ID, stdPrfo.profileFile, token);
+
                     }
                     if (status == "200")
                     {

@@ -261,7 +261,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                         //Storing the response details recieved from web api
                         var respString = result.Content.ReadAsStringAsync().Result;
                         //Deserializing the response recieved from web api and storing into the Employee list
-                        var respstatus = JsonConvert.DeserializeObject<string>(respString);
+                        var respstatus = JsonConvert.DeserializeObject<object>(respString);
                         status = "200";
                     }
                     else
