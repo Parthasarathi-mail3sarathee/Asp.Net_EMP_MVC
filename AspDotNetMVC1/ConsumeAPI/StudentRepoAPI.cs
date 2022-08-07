@@ -37,12 +37,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public UserRoleModel GetMyRole(string userid, string token)
         {
             UserRoleModel userRolelist = new UserRoleModel();
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -74,12 +74,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public Pager GetStudentPageCount(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -111,12 +111,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public StudentList GetStudentsPerPage(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -148,12 +148,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public StudentList GetStudents(string token)
         {
             StudentList stdlist = new StudentList();
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -187,12 +187,12 @@ namespace AspDotNetMVC1.ConsumeAPI
             StudentModel stdMdl = new StudentModel();
             Student std1;
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -222,12 +222,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         {
             Student std1;
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -278,12 +278,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public string AddStudent(Student std, string token)
         {
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -319,12 +319,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         {
             Student std1;
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -377,12 +377,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         {
             Student std1;
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -396,7 +396,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PutAsync("Student/UpdateStudent/", byteContent).Result;
+                var result = client.PutAsync("Student/UpdateStudent/"+ std.ID, byteContent).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
@@ -419,12 +419,12 @@ namespace AspDotNetMVC1.ConsumeAPI
         public string DelStudent(int id, string token)
         {
             string status = string.Empty;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
             {
                 //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
                 client.DefaultRequestHeaders.Clear();
                 //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

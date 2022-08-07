@@ -96,6 +96,15 @@ namespace AspDotNetMVC1.Models
         public string Emsg { get; set; }
     }
 
+    public class StudentProfile
+    {
+        public List<IFormFile> profileFile { get; set; }
+    }
+    
+    public class UrlBase
+    {
+        public string Baseurl { get; set; }
+    }
     public class ApiKey
     {
         public string ClientKeyHeader { get; set; }

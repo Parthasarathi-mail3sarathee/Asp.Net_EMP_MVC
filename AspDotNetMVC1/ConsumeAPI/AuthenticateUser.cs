@@ -25,7 +25,7 @@ namespace AspDotNetMVC1.ConsumeAPI
         public async Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login)
         {
             Token token = null;
-            string Baseurl = "https://localhost:44379/api/";
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
 
             try
@@ -33,7 +33,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                 using (var client = new HttpClient())
                 {
                     //Passing service base url
-                    client.BaseAddress = new Uri(Baseurl);
+                    client.BaseAddress = new Uri(UrlBase.Baseurl);
                     client.DefaultRequestHeaders.Clear();
                     //Define request data format
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

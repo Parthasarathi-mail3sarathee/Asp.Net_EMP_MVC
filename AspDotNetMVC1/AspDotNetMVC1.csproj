@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Repo2\EMP_WebAPI\WebApplication_Shared_Services_Model\WebApplication_Shared_Services_Model.csproj" />
+    <ProjectReference Include="..\..\Asp.NetMVC\WebApplication_Shared_Services_Model\WebApplication_Shared_Services_Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
