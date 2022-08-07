@@ -52,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'frontendMVC'
-          slot-name: 'Production'
+          slot-name: 'development'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_58335FBA1A1246AC98A3F5A94E1041B2 }}
           package: .
