@@ -134,7 +134,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                     {
                         var bytearray = streamToByteArray(ms);
 
-                        SaveByteArrayToFileWithFileStream(bytearray, "d:\\test1\\" + fileName);
+                        //SaveByteArrayToFileWithFileStream(bytearray, "d:\\test1\\" + fileName);
 
                         return bytearray;
                     }
