@@ -18,6 +18,8 @@ namespace AspDotNetMVC1.ConsumeAPI
         Pager GetStudentPageCount(Pager pager, string token);
         StudentList GetStudentsPerPage(Pager pager, string token);
         StudentList GetStudents(string token);
+        byte[] GetthisStudentFile(int studid, string fileName, string token);
+        List<string> GetStudentFileListByID(int studid, string token);
         StudentModel GetStudentByID(int id, string token);
         string AddStudent(Student std, string token);
         string AddStudentProfile(int id, IList<IFormFile> stdprofile, string token);
@@ -108,6 +110,118 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
+        public byte[] GetthisStudentFile(int studid, string fileName, string token)
+        {
+            Stream stream1 = null;
+            try
+            {
+                byte[] stdfile = null;
+                UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
+                ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+                using (var client = new HttpClient())
+                {
+                    //Passing service base url
+                    client.BaseAddress = new Uri(UrlBase.Baseurl);
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+                    var result = client.GetAsync("Student/GetStudentFileByIDAndName/" + studid + "/" + fileName).Result;
+
+
+                    using (MemoryStream ms = (MemoryStream)result.Content.ReadAsStreamAsync().Result)
+                    {
+                        var bytearray = streamToByteArray(ms);
+
+                        SaveByteArrayToFileWithFileStream(bytearray, "d:\\test1\\" + fileName);
+
+                        return bytearray;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            //byte[] buffer = new byte[16 * 1024];
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    int read;
+            //    while ((read = resultStream.Read(buffer, 0, buffer.Length)) > 0)
+            //    {
+            //        ms.Write(buffer, 0, read);
+            //    }
+            //    stdfile = ms.ToArray();
+            //    return stdfile;
+            //}
+
+        }
+
+        public static void SaveByteArrayToFileWithFileStream(byte[] data, string filePath)
+        {
+            using (var stream = File.Create(filePath))
+            {
+                stream.Write(data, 0, data.Length);
+            }
+        }
+
+        private static byte[] streamToByteArray(Stream input) //Eliminated
+        {
+            MemoryStream ms = new MemoryStream();
+            input.CopyTo(ms);
+            return ms.ToArray();
+        }
+
+        private static MemoryStream streamToMemoryStream(Stream input)//Eliminated
+        {
+            MemoryStream ms = new MemoryStream();
+            input.CopyTo(ms);
+            return ms;
+        }
+
+        private static byte[] streamWriteToFileAndSendArray(MemoryStream input, string fileName)
+        {
+            using (var file = new FileStream("d:\\test1\\" + fileName, FileMode.Create, FileAccess.Write))
+            {
+                ;
+                input.WriteTo(file);
+                return input.ToArray();
+                // return ms;
+            }
+        }
+
+        public List<string> GetStudentFileListByID(int studid, string token)
+        {
+            List<string> stdfilelist = new List<string>();
+            UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
+            ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+            using (var client = new HttpClient())
+            {
+                //Passing service base url
+                client.BaseAddress = new Uri(UrlBase.Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
+                var result = client.GetAsync("Student/GetStudentFileListID/" + studid).Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var getAllStudentFileString = result.Content.ReadAsStringAsync().Result;
+                    //Deserializing the response recieved from web api and storing into the Employee list
+                    stdfilelist = JsonConvert.DeserializeObject<List<string>>(getAllStudentFileString);
+                }
+                else
+                {
+                    stdfilelist = null;
+                }
+                //returning the employee list to view
+                return stdfilelist;
+            }
+        }
         public StudentList GetStudentsPerPage(Pager pager, string token)
         {
             StudentList stdlist = new StudentList();
@@ -396,7 +510,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PutAsync("Student/UpdateStudent/"+ std.ID, byteContent).Result;
+                var result = client.PutAsync("Student/UpdateStudent/" + std.ID, byteContent).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {

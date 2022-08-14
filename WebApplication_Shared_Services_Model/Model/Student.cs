@@ -18,6 +18,7 @@ namespace WebApplication_Shared_Services.Model
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
         public List<string> SkillSets { get; set; }
+        public bool IsFileContainerExist { get; set; }
         public DateTime DOB { get; set; }
         public DateTime DOJ { get; set; }
         public bool IsActive { get; set; }

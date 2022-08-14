@@ -72,26 +72,37 @@ namespace AspDotNetMVC1.Controllers
 
         public IActionResult Get_Pager(Pager pager)
         {
-            var sessionstate = CheckSessionAndUserRole();
-            var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
-            if (sessionstate.IsValidUser == true && availRole != null)
+            try
             {
-                _logger.WriteLog("Log Started" + pager.ToString());
-                if (pager.currentPage > pager.pageCount) pager.currentPage = pager.pageCount;
-                else if (pager.currentPage < 1) pager.currentPage = 1;
-                ViewBag.pager = pager;
-                return View("_Pager", pager);
+                var sessionstate = CheckSessionAndUserRole();
+                var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
+                if (sessionstate.IsValidUser == true && availRole != null)
+                {
+                    //_logger.WriteLog("Log Started" + pager.ToString());
+                    if (pager.currentPage > pager.pageCount) pager.currentPage = pager.pageCount;
+                    else if (pager.currentPage < 1) pager.currentPage = 1;
+                    ViewBag.pager = pager;
+                    return PartialView("_Pager", pager);
+                }
+                else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
+                {
+                    ViewBag.SessionSet = "true";
+                    return View("StudentHome");
+                }
+                else
+                {
+                    ViewBag.SessionSet = "false";
+                    ViewBag.Emsg = "Unauthorized access/Session expired";
+                    return View("../Home/Index");
+                }
             }
-            else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
+            catch (Exception ex)
             {
-                ViewBag.SessionSet = "true";
-                return View("StudentHome");
-            }
-            else
-            {
+                //_logger.WriteLog(ex.Message + ex.StackTrace.ToString() + ex.InnerException.ToString());
                 ViewBag.SessionSet = "false";
                 ViewBag.Emsg = "Unauthorized access/Session expired";
                 return View("../Home/Index");
+
             }
         }
 
@@ -149,6 +160,51 @@ namespace AspDotNetMVC1.Controllers
                 ViewBag.Emsg = "Unauthorized access/Session expired";
                 return View("../Home/Index");
             }
+        }
+
+
+        [HttpGet]
+        public FileContentResult GetthisStudentFile(int studid, string fileName)
+        {
+            byte[] fileBytes = null;
+            Stream stream = null;
+            StudentList studentlist = null;
+            var sessionstate = CheckSessionAndUserRole();
+            var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
+            if (sessionstate.IsValidUser == true && availRole != null)
+            {
+                fileBytes = _studentRepoAPI.GetthisStudentFile(studid, fileName, _session.GetString("token"));
+                string contentType = "application/octet-stream";
+
+                return new FileContentResult(fileBytes, contentType);
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        public List<string> GetStudentFileListByID(int studid)
+        {
+            StudentList studentlist = null;
+            var sessionstate = CheckSessionAndUserRole();
+            var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
+            if (sessionstate.IsValidUser == true && availRole != null)
+            {
+                var res = _studentRepoAPI.GetStudentFileListByID(studid, _session.GetString("token"));
+                return res;
+            }
+            else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
+            {
+                ViewBag.SessionSet = "true";
+                return new List<string> { "Unauthorized access/Session expired" };
+            }
+            else
+            {
+                ViewBag.SessionSet = "false";
+                ViewBag.Emsg = "Unauthorized access/Session expired";
+                return new List<string> { "Unauthorized access/Session expired" };
+            }
+
         }
         public IActionResult GetDashboard()
         {
@@ -238,6 +294,7 @@ namespace AspDotNetMVC1.Controllers
                 stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
                 stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
                 stdvm.SkillSets = stud.Student.SkillSets;
+                //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
                 if (stud.status == "200")
                 {
                     return View("AddEmployee", stdvm);
@@ -327,6 +384,7 @@ namespace AspDotNetMVC1.Controllers
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
                         std.SkillSets = stud.SkillSets;
+                        //std.IsFileContainerExist = stud.IsFileContainerExist; 
                         stdPrfo.profileFile = stud.profileFile;
                         status = _studentRepoAPI.AddStudent(std, token);
                         if (status.Contains("200:"))
@@ -376,6 +434,7 @@ namespace AspDotNetMVC1.Controllers
                         std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
                         std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
                         std.SkillSets = stud.SkillSets;
+                        //std.IsFileContainerExist = stud.IsFileContainerExist;
                         stdPrfo.profileFile = stud.profileFile;
                         status = _studentRepoAPI.UpdateStudent(std, token);
                         if (status == "200" && stdPrfo?.profileFile?.Count > 0)

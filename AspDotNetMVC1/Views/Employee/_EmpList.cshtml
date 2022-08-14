@@ -20,9 +20,15 @@
                         ;
                     }
                 </td>
+                <td width="100">
+                    @if (std.IsFileContainerExist)
+                    {
+                        <button id="myBtn_@std.ID" class="popup">File exists</button>
+                    }
+                </td>
                 <td width="100">  <input type="submit" id="Edit_@std.ID" value="Edit" class="buttontbl" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'" /></td>
                 @{
-                    string delurl = "DelEmployee/"+@std.ID;
+                    string delurl = "DelEmployee/" + @std.ID;
                 }
                 <td width="80">  <input type="submit" id="Delete_@std.ID" value="Delete" class="buttontbl" onclick="location.href='@Url.Action(@delurl, "Employee")'" /></td>
                 <td width="20"></td>
@@ -30,4 +36,14 @@
         }
 
     </table>
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="Divfileset">
+            </div>
+        </div>
+
+    </div>
 </div>

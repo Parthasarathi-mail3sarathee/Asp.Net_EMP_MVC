@@ -1,6 +1,9 @@
 
 $.noConflict();
 jQuery(document).ready(function ($) {
+    $('#validTxtSkill').hide();
+    $('#validTxtemail').hide();
+    $('#validTxtRole').hide();
 
     $(".TabLoginDetail").hide();
     $(".TabRegisterDetail").show();
@@ -82,12 +85,14 @@ jQuery(document).ready(function ($) {
                 $('#EmpListContainer').html(ajaxData);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
             }
         });
     }
 
-    $(".pgrPrv").click(function () {
+    $(document).on('click', '.pgrPrv', function () {
+
         //alert($(".ddlPgsize option:selected").text());
         //alert($(this).text());
         //alert($("a.active").text());
@@ -101,16 +106,20 @@ jQuery(document).ready(function ($) {
             url: "../Employee/Get_Pager",
             data: data1, // serializes the form's elements.
             success: function (ajaxData) { // show response from the php script.
+
                 $('#PaginationContainer').html(ajaxData);
                 GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
             }
         });
 
     });
-    $(".pgrNxt").click(function () {
+
+    $(document).on('click', '.pgrNxt', function () {
+
         var currentPage = parseInt($("a.active").text(), 10) + 1;
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
@@ -125,11 +134,113 @@ jQuery(document).ready(function ($) {
                 GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
             }
         });
     });
-    $(".pgr").click(function () {
+    function getParameterByName(name, url) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    $(document).on('click', 'a.downloadfile', function (e) {
+        e.preventDefault();
+
+        var href = $(this).attr('href');
+
+        var filename = getParameterByName('fileName', href);
+        var studid = getParameterByName('studid', href);
+
+        //var xhr = new XMLHttpRequest();
+        //xhr.onreadystatechange = function () {
+        //    if (this.readyState == 4 && this.status == 200) {
+        //        //this.response is what you're looking for
+
+        //        var blob = new Blob([this.response], { type: "application/octet-stream" });
+
+        //            //Check the Browser type and download the File.
+        //            var isIE = false || !!document.documentMode;
+        //            if (isIE) {
+        //                window.navigator.msSaveBlob(blob, fileName);
+        //            } else {
+        //                var url = window.URL || window.webkitURL;
+        //                link = url.createObjectURL(blob);
+        //                var a = $("<a />");
+        //                a.attr("download", filename);
+        //                a.attr("href", link);
+        //                $("body").append(a);
+        //                a[0].click();
+        //                $("body").remove(a);
+        //            }
+        //    }
+        //}
+        //xhr.open('GET', href);
+        //xhr.responseType = 'blob';
+        //xhr.send();   
+
+
+        var a = document.createElement('a');
+        if (window.URL && window.Blob && ('download' in a) && window.atob) {
+            // Do it the HTML5 compliant way
+            $.ajax({
+                type: "GET",
+                url: href,
+                cache: false,
+                xhr: function () {// Seems like the only way to get access to the xhr object
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob'
+                    return xhr;
+                },
+                success: function (result) { // show response from the php script.
+
+                    var blob = new Blob([result], { type: "application/octet-stream" });
+
+                    //Check the Browser type and download the File.
+                    var isIE = false || !!document.documentMode;
+                    if (isIE) {
+                        window.navigator.msSaveBlob(blob, fileName);
+                    } else {
+                        var url = window.URL || window.webkitURL;
+                        link = url.createObjectURL(blob);
+                        var a = $("<a />");
+                        a.attr("download", filename);
+                        a.attr("href", link);
+                        $("body").append(a);
+                        a[0].click();
+                        $("body").remove(a);
+                    }
+                    console.log(result);
+                    //let blob = new Blob([result], { type: "application/octet-stream" });
+
+                    //let a = document.createElement('a');
+                    //a.href = window.URL.createObjectURL(blob);
+                    //a.download = filename;
+                    //document.body.appendChild(a);
+                    //a.click();
+                    //document.body.removeChild(a);
+                    //window.URL.revokeObjectURL(a.href);
+                    filname = "";
+                    //var blob = base64ToBlob(result.download.data, result.download.mimetype);
+                    //var url = window.URL.createObjectURL(blob);
+                    //a.href = url;
+                    //a.download = result.download.filename;
+                    //a.click();
+                    //window.URL.revokeObjectURL(url);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("Status: " + textStatus);
+                    console.log("Error: " + errorThrown);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.pgr', function () {
         var currentPage = parseInt($(this).text(), 10);
         var PageSize = parseInt($(".ddlPgsize option:selected").text(), 10);
         var pgCount = $("#pgCount").val();
@@ -145,10 +256,48 @@ jQuery(document).ready(function ($) {
                 GetEmp(data1);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
             }
         });
     });
+
+    $(document).on('click', '.popup', function () {
+        var val = $(this).attr('id').split("_");
+
+        //$("#Divfileset").append('<span class="skilsetSpan">' + skill + ' <button type="button" class="removeSkill">X</button></span>');
+        var data1 = { studid: val[1] }
+        $.ajax({
+            type: "POST",
+            url: "../Employee/GetStudentFileListByID/" + val[1],
+            data: data1, // serializes the form's elements.
+            success: function (ajaxData) { // show response from the php script.
+                //$('#PaginationContainer').html(ajaxData);
+                //GetEmp(data1);   
+                $("#Divfileset").append("<span>StudentID: " + val[1] + "</span><ul></ul>");
+                $.each(ajaxData, function (index) {
+                    var anchorlink = "GetthisStudentFile/?studid=" + val[1] + "&fileName=" + ajaxData[index];
+                    $("#Divfileset>ul").append('<li><span class="skilsetSpan"><a class="downloadfile" studid="' + val[1] + '" fileName="' + ajaxData[index] + '" href="' + anchorlink + '" download>' + ajaxData[index] + ' </a><button type="button" class="removeSkill">X</button></span></li>');
+
+                });
+                var modal = $("#myModal");
+                modal.css("display", "block");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("Status: " + textStatus);
+                console.log("Error: " + errorThrown);
+            }
+        });
+    });
+
+    $(document).on('click', '.close', function () {
+        var modal = $("#myModal");
+        modal.css("display", "none");
+        $("#Divfileset").empty();
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+
     //$(".btnEdit").click(function (e) {
     //    // avoid to execute the actual submit of the form.
     //    var id = $(this).attr('id');
@@ -160,22 +309,7 @@ jQuery(document).ready(function ($) {
 
 
 
-    function validate() {
-        var isValid = false;
-        alert("Validation start");
-        var val = $('#txtName').value;
-        alert(val);
-        if (val == '') {
-            alert("Validation start");
-            $('#validTxtName').text("Name field is required");
-            isValid = false;
-        }
-        return isValid;
-    }
 
-    function validMail(email) {
-        return email.match(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/);
-    }
     $("#tbnskilladd").click(function (e) {
         e.preventDefault();
         var skill = $("#txtSkill").val();
@@ -212,11 +346,13 @@ jQuery(document).ready(function ($) {
                 "border": "1px solid red",
                 "background": "#FFCECE"
             });
+            $('#validTxtSkill').show();
         } else {
             $("#txtSkill").css({
                 "border": "",
                 "background": ""
             });
+            $('#validTxtSkill').hide();
         }
         var email = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
         if ($("#txtEmail").val() == '' || !email.test($("#txtEmail").val())) {
@@ -225,13 +361,32 @@ jQuery(document).ready(function ($) {
                 "border": "1px solid red",
                 "background": "#FFCECE"
             });
+            $('#validTxtemail').show();
         }
         else {
             $("#txtEmail").css({
                 "border": "",
                 "background": ""
             });
+            $('#validTxtemail').hide();
         }
+
+        if ($("#txtrole").val() == '' || $("#txtrole").val().length > 6) {
+            isValid = false;
+            $("#txtrole").css({
+                "border": "1px solid red",
+                "background": "#FFCECE"
+            });
+            $('#validTxtRole').show();
+        }
+        else {
+            $("#txtrole").css({
+                "border": "",
+                "background": ""
+            });
+            $('#validTxtRole').hide();
+        }
+
         $('#txtName,#txtAdrs,#txtrole,#txtdpt,#txtDOB,#txtDOJ').each(function () {
 
             if ($.trim($(this).val()) == '') {

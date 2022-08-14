@@ -45,6 +45,7 @@ namespace AspDotNetMVC1
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<ILoggers, Loggers>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddApplicationInsightsTelemetry(Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

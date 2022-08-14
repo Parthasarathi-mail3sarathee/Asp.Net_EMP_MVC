@@ -19,7 +19,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Name)
                     @Html.TextBoxFor(m => m.Name, new { @id="txtName" , @class = "form-control" })
-                    <span id="validTxtName" class="msg"></span>
+                    
                 </div>
 
             </div>
@@ -28,6 +28,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Address)
                     @Html.TextBoxFor(m => m.Address, new { @id="txtAdrs" ,  @class = "form-control" })
+                    <span id="validTxtName" class="msg"></span>
                 </div>
             </div>
         </div> <div class="rowform">
@@ -36,6 +37,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Role)
                     @Html.TextBoxFor(m => m.Role, new { @id="txtrole" ,@class = "form-control" })
+                    <span id="validTxtRole" class="msg">Enter valid Role not more than 6 char</span>
                 </div>
 
             </div>
@@ -53,6 +55,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email)
                     @Html.TextBoxFor(m => m.Email, new { @id="txtEmail", @class = "form-control" })
+                    <span id="validTxtemail" class="msg">Enter valid email id</span>
                 </div>
 
             </div>
@@ -75,6 +78,7 @@
             <div class="columnform">
                 <div class="form-group">
                     @Html.LabelFor(m => m.SkillSets)
+                    <span id="validTxtSkill" class="msg">Enter atleast one skill</span>
                     <input type="text" id="txtSkill" name="txtSkill" /><button type="button" id="tbnskilladd" name="tbnskilladd">+</button>
                     <div id="DivSkillset">
                         @if (Model.SkillSets != null)
@@ -92,7 +96,7 @@
         </div>
 
         <div class="rowform">
-            <div class="columnform"> <input type="file"  id="profileFile" name="profileFile" multiple="multiple" required /> </div>
+            <div class="columnform"> <input type="file" id="profileFile" name="profileFile" multiple="multiple" required /> </div>
             <div class="columnform"> </div>
         </div>
         <div class="rowform odd">

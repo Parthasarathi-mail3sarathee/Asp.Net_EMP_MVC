@@ -71,6 +71,7 @@ namespace AspDotNetMVC1.Models
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
         public List<string> SkillSets { get; set; }
+        public bool IsFileContainerExist { get; set; }
         public List<IFormFile> profileFile { get; set; }
 
         [Display(Name = "Date Of Birth")]
@@ -104,6 +105,7 @@ namespace AspDotNetMVC1.Models
     public class UrlBase
     {
         public string Baseurl { get; set; }
+        public string Baseurl1 { get; set; }
     }
     public class ApiKey
     {
