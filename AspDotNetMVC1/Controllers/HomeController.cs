@@ -15,10 +15,11 @@ namespace AspDotNetMVC1.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuthenticateUserAPI _authenticateUserAPI;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private ISession _session;
         public HomeController(IHttpContextAccessor httpContextAccessor, IAuthenticateUserAPI authenticateUserAPI)
         {
             _httpContextAccessor = httpContextAccessor;
+            this._session = httpContextAccessor.HttpContext.Session;
             _authenticateUserAPI = authenticateUserAPI;
         }
         public IActionResult Index()
@@ -36,9 +37,11 @@ namespace AspDotNetMVC1.Controllers
             if (token != null)
             {
                 ViewBag.NotValidUser = "false";
+                //_session.SetString("UserID", loginModel.login.username);
+                _session.SetString("token", token.token);
                 HttpContext.Session.SetString("UserID", loginModel.login.username);
                 HttpContext.Session.SetString("token", token.token);
-
+             
                 return RedirectToAction("GetDashboard", "Employee");
             }
             else

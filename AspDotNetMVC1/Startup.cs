@@ -6,6 +6,7 @@ using AspDotNetMVC1.ConsumeAPI;
 using AspDotNetMVC1.SharedService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,17 +29,24 @@ namespace AspDotNetMVC1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Step:1
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.HttpOnly = HttpOnlyPolicy.Always;
+                options.Secure = CookieSecurePolicy.Always;
+                // you can add more options here and they will be applied to all cookies (middleware and manually created cookies)
             });
+            //Step:2, step one after cooke configuration then only session work this should be the order
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(30); 
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
 
+            services.AddDistributedMemoryCache();
             services.AddResponseCaching();
             services.TryAddScoped<IAuthenticateUserAPI, AuthenticateUserAPI>();
             services.TryAddScoped<IStudentRepoAPI, StudentRepoAPI>();
@@ -46,6 +54,7 @@ namespace AspDotNetMVC1
             services.TryAddSingleton<ILoggers, Loggers>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApplicationInsightsTelemetry(Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +78,7 @@ namespace AspDotNetMVC1
                 ctx.Request.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
                 {
                     Public = true,
-                    MaxAge = TimeSpan.FromSeconds(60)
+                    MaxAge = TimeSpan.FromSeconds(1800)
                 };
                 await next();
             }

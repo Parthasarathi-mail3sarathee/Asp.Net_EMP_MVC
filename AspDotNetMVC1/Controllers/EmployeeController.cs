@@ -20,12 +20,13 @@ namespace AspDotNetMVC1.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStudentRepoAPI _studentRepoAPI;
         private readonly ILoggers _logger;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private ISession _session;
 
         public EmployeeController(IHttpContextAccessor httpContextAccessor, ILoggers logger, IStudentRepoAPI studentRepoAPI)
         {
             var path = Directory.GetCurrentDirectory();
             _httpContextAccessor = httpContextAccessor;
+            this._session = httpContextAccessor.HttpContext.Session;
             _studentRepoAPI = studentRepoAPI;
             _logger = logger;
             _logger.setFileLog($"{path}\\logs\\logger_" + DateTime.Now.ToString("dd_MM_yy") + ".txt");
@@ -43,7 +44,7 @@ namespace AspDotNetMVC1.Controllers
         public SessionStatus CheckSessionAndUserRole()
         {
             SessionStatus sessionState = new SessionStatus();
-            if (_session.GetString("UserID") != null)
+            if (HttpContext.Session.GetString("UserID") != null)
             {
                 sessionState.token = _session.GetString("token");
                 if (sessionState.token != null)
