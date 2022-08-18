@@ -4,7 +4,7 @@
     <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
         @foreach (Student std in (List<Student>)ViewBag.studentList)
         {
-            <tr>
+            <tr class="tdtextalignGrid">
                 <td width="100">@std.ID</td>
                 <td width="100">@std.Name</td>
                 <td width="100">@std.Address</td>
@@ -31,7 +31,7 @@
                     string delurl = "DelEmployee/" + @std.ID;
                 }
                 <td width="80">  <input type="submit" id="Delete_@std.ID" value="Delete" class="buttontbl" onclick="location.href='@Url.Action(@delurl, "Employee")'" /></td>
-                <td width="20"></td>
+               
             </tr>
         }
 

@@ -351,3 +351,9 @@ td, th {
         text-decoration: none;
         cursor: pointer;
     }
+.thtextalignGrid{
+    text-align:center;
+}
+.tdtextalignGrid {
+    text-align: center;
+}
