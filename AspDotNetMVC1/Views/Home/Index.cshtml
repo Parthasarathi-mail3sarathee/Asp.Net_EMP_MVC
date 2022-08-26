@@ -44,9 +44,13 @@
                         @if (@ViewBag.NotValidUser != null)
                         {
 
-                            <label  class="msg"> Not a valid user </label><br/>
-                            <span class="msg">Click register yourself a new user or </span>  <br/>
-                            <span  class="msg">Click forget password</span><br/>
+                            <label class="msg"> Not a valid user </label>
+
+                            <br />
+                            <span class="msg">Click register yourself a new user or </span>  <br />
+                            <span class="msg">Click forget password</span>
+
+                            <br />
                         }
                     </div>
                     <div class="loginbtn">
@@ -58,7 +62,7 @@
 
             </div>
             <div class="TabRegisterDetail form">
-               
+
                 <form action="/Home/Regiser" method="post" class="login-form">
                     <div class="form-group loginheader">
                         <h1>  Register Here  </h1>
@@ -79,7 +83,7 @@
                         @Html.EditorFor(model => model.register.ConfirmPassword, new { htmlAttributes = new { @class = "loginPwd" } }) *
                         @Html.ValidationMessageFor(model => model.register.ConfirmPassword)
 
-                    </div> 
+                    </div>
                     <div class="form-group error">
                         <label>Email:</label>
                         @Html.EditorFor(model => model.register.Email, new { htmlAttributes = new { @class = "loginPwd" } }) *
@@ -103,13 +107,19 @@
                         @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "loginPwd" } }) *
                         @Html.ValidationMessageFor(model => model.email)
                     </div>
-                   
+
                     <div class="loginbtn">
 
                         <input type="submit" value="ForgetPassword" class="button" />
 
                     </div>
                 </form>
+            </div>
+            <div>
+                <span><u>Admin Username</u>: <b>test@test.com</b></span>
+                <span><u>Admin Password</u>: <b>Lead</b></span><br />
+                <span><u>General User  </u>: <b>shankar@test.com</b></span>
+                <span><u>General Password</u>: <b>student</b></span>
             </div>
         </div>
     </div>
