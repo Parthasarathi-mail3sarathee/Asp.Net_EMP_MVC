@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using WebApplication_Shared_Services.Model;
 
@@ -296,6 +298,18 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
+        public static bool ValidateServerCertificate(object sender,X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            Console.WriteLine("Validating certificate {0}", certificate.Issuer);
+            if (sslPolicyErrors == SslPolicyErrors.None)
+                return true;
+
+            Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
+
+            // Do not allow this client to communicate with unauthenticated servers.
+            return false;
+        }
+
         public StudentModel GetStudentByID(int id, string token)
         {
             StudentModel stdMdl = new StudentModel();
@@ -303,6 +317,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+
             using (var client = new HttpClient())
             {
                 //Passing service base url
@@ -338,6 +353,59 @@ namespace AspDotNetMVC1.ConsumeAPI
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
+
+            /// 
+            ///
+            //X509Certificate2 certificate;
+            //var handler = new HttpClientHandler
+            //{
+            //    ClientCertificateOptions = ClientCertificateOption.Manual,
+            //    SslProtocols = SslProtocols.Tls12
+            //};
+            //handler.ClientCertificates.Add(certificate);
+            //handler.CheckCertificateRevocationList = false;
+            //// this is required to get around self-signed certs
+            //handler.ServerCertificateCustomValidationCallback =
+            //    (httpRequestMessage, cert, cetChain, policyErrors) => {
+            //        return true;
+            //    };
+            //var client = new HttpClient(handler);
+            //requestMessage.Headers.Add("X-ARR-ClientCert", certificate.GetRawCertDataString());
+
+            ////public IServiceProvider ConfigureServices(IServiceCollection services)
+            //{
+            //    services.AddCertificateForwarding(options => {
+            //        options.CertificateHeader = "X-ARR-ClientCert";
+            //        options.HeaderConverter = (headerValue) => {
+            //            X509Certificate2 clientCertificate = null;
+            //            try
+            //            {
+            //                if (!string.IsNullOrWhiteSpace(headerValue))
+            //                {
+            //                    var bytes = ConvertHexToBytes(headerValue);
+            //                    clientCertificate = new X509Certificate2(bytes);
+            //                }
+            //            }
+            //            catch (Exception)
+            //            {
+            //                // invalid certificate
+            //            }
+
+            //            return clientCertificate;
+            //        };
+            //    });
+            //}
+
+            //using (var client = new HttpClient(new HttpClientHandler
+            //{
+            //    ClientCertificateOptions = ClientCertificateOption.Manual,
+            //    SslProtocols = SslProtocols.Tls12,
+            //    ClientCertificates = { new X509Certificate2(@"C:\kambiDev.pfx") }
+            //}))
+
+            //var handler = new HttpClientHandler();
+            //handler.ClientCertificates.Add(new X509Certificate2("cert.crt"));
+            // using (var client = new HttpClient(handler))
 
             using (var client = new HttpClient())
             {
