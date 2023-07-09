@@ -4,22 +4,22 @@ jQuery(document).ready(function ($) {
     $('#validTxtSkill').hide();
     $('#validTxtemail').hide();
     $('#validTxtRole').hide();
-
-    $(".TabLoginDetail").hide();
-    $(".TabRegisterDetail").show();
-    $(".TabForgotPassDetail").hide();
     if ($(':hidden#SessionSet').val() == "true") {
 
         $("#idlogin").show();
         $("#idlogout").hide();
     }
+
+    $(".TabLoginDetail").hide();
+    $(".TabRegisterDetail").show();
+    $(".TabForgotPassDetail").hide();
     if ($(':hidden#NotValidUser').val() == "true") {
-        $(".TabMenuLogin").addClass("TabMenuTextSelected");
-        $(".TabMenuLogin").removeClass("TabMenuTextNotSelected");
-        $(".TabMenuForgotPass").addClass("TabMenuTextNotSelected");
-        $(".TabMenuForgotPass").removeClass("TabMenuTextSelected");
-        $(".TabMenuRegister").addClass("TabMenuTextNotSelected");
-        $(".TabMenuRegister").removeClass("TabMenuTextSelected");
+        $(".tabmenulogin").addclass("tabmenutextselected");
+        $(".tabmenulogin").removeclass("tabmenutextnotselected");
+        $(".tabmenuforgotpass").addclass("tabmenutextnotselected");
+        $(".tabmenuforgotpass").removeclass("tabmenutextselected");
+        $(".tabmenuregister").addclass("tabmenutextnotselected");
+        $(".tabmenuregister").removeclass("tabmenutextselected");
 
         $(".TabLoginDetail").show();
         $(".TabRegisterDetail").hide();
@@ -139,6 +139,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
     function getParameterByName(name, url) {
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),

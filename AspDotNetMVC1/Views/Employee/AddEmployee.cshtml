@@ -9,7 +9,10 @@
 <div class="EmpContainer">
 
     Add Employee
-    <input type="submit" value="Employee List" class="buttontblAdd" onclick="location.href='@Url.Action("GetDashboard", "Employee")'" />
+    <button type="submit" value="Employee List" class="buttontblAdd" onclick="location.href='@Url.Action("GetDashboard", "Employee")'">
+        Employee List
+          <img class="buttontbladdimage" src="~/images/emp list.png" />
+    </button>
     <h2>Employee Details</h2>
     <div> <span class="msgInner">@ViewBag.msg</span></div>
     <form method="post" id="frmAddEmp">
@@ -19,7 +22,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Name)
                     @Html.TextBoxFor(m => m.Name, new { @id="txtName" , @class = "form-control" })
-                    
+
                 </div>
 
             </div>

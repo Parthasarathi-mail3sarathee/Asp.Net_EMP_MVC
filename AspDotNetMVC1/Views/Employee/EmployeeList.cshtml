@@ -9,14 +9,16 @@
 
     <div id="div">
 
-        <input type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'" />
-
+        <button type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'">
+            Add Employee
+            <img class="buttontbladdimage" src="~/images/emp add.png" />
+        </button>
         <span class="msgInner">@ViewBag.msg</span><br />
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont filldata">
             <tr>
                 <td>
                     <div id="EmpHeaderContainer">
-                          @Html.Partial("_EmpHeader");
+                        @Html.Partial("_EmpHeader");
                     </div>
                 </td>
             </tr>

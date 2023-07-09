@@ -26,12 +26,24 @@
                         <button id="myBtn_@std.ID" class="popup">File exists</button>
                     }
                 </td>
-                <td width="100">  <input type="submit" id="Edit_@std.ID" value="Edit" class="buttontbl" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'" /></td>
+                <td width="150">
+                    <button type="submit" id="Edit_@std.ID" value="Edit" class="buttontbledit" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'">
+                    Edit
+                    
+                     <img class="buttontbleditimage" src="~/images/Edit.png"/>
+                    </button>
+                </td>
                 @{
                     string delurl = "DelEmployee/" + @std.ID;
                 }
-                <td width="80">  <input type="submit" id="Delete_@std.ID" value="Delete" class="buttontbl" onclick="location.href='@Url.Action(@delurl, "Employee")'" /></td>
-               
+                <td width="150">
+                    <button type="submit" id="Delete_@std.ID" value="Delete" class="buttontbldelete" onclick="location.href='@Url.Action(@delurl, "Employee")'">
+                    Delete
+                    
+                    <img class="buttontbldeleteimage"  src="~/images/delete.png"/>     
+                    </button>
+                </td>
+
             </tr>
         }
 

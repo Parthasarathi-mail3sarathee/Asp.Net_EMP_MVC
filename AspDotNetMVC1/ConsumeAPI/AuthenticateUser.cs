@@ -10,7 +10,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 {
     public interface IAuthenticateUserAPI
     {
-        Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login);
+        Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login logout);
     }
     public class AuthenticateUserAPI : IAuthenticateUserAPI
     {
@@ -22,7 +22,7 @@ namespace AspDotNetMVC1.ConsumeAPI
             this.configuration = configuration;
         }
 
-        public async Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login login)
+        public async Task<Token> GetLogin(WebApplication_Shared_Services.Model.Login logout)
         {
             Token token = null;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
@@ -40,7 +40,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                     client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
 
 
-                    var myContent = JsonConvert.SerializeObject(login);
+                    var myContent = JsonConvert.SerializeObject(logout);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                     var byteContent = new ByteArrayContent(buffer);
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
