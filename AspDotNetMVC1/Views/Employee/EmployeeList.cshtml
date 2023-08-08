@@ -2,10 +2,16 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+<div class="AppName">
+    Employee Management System (EMS)
+</div>
+<button type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'">
+    Add Employee
+    <img class="buttontbladdimage" src="~/images/emp add.png" />
+</button>
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
 
-<button type="submit" id="Logout" value="Logout" class="lgout"  onclick="location.href='@Url.Action("Logout", "Home")'">
+<button type="submit" id="Logout" value="Logout" class="lgout" onclick="location.href='@Url.Action("Logout", "Home")'">
     Logout
     <img class="buttontbllogoutimage" src="~/images/logout.png" />
 </button>
@@ -13,10 +19,7 @@
 
     <div id="div">
 
-        <button type="submit" value="Add Employee" class="buttontblAdd" onclick="location.href='@Url.Action("AddEmployee", "Employee")'">
-            Add Employee
-            <img class="buttontbladdimage" src="~/images/emp add.png" />
-        </button>
+
         <span class="msgInner">@ViewBag.msg</span><br />
         <table id="table" cellspacing="0" cellpadding="0" border="0" width="820" class="myFont filldata">
             <tr>

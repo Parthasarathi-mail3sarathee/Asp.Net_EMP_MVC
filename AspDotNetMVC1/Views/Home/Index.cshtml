@@ -4,6 +4,9 @@
 }
 @Html.Hidden("NotValidUser", (string)ViewBag.NotValidUser)
 <div class="loginWindow">
+    <div class="AppName">
+        Employee Management System (EMS)
+    </div>
     <div class="loginbox">
         <div class="TabMenu">
             <div class="TabMenuLogin TabMenuTextNotSelected">
@@ -26,7 +29,7 @@
 
                 <form action="/Home/Login" method="post" class="login-form">
                     <div class="form-group loginheader">
-                        <h1> Login Here  </h1>
+                        <span style="font-size:25px"> Login Here  </span>
                     </div>
                     <div class="form-group loginuser">
                         <label>User Name: </label>
@@ -65,7 +68,7 @@
 
                 <form action="/Home/Regiser" method="post" class="login-form">
                     <div class="form-group loginheader">
-                        <h1>  Register Here  </h1>
+                        <span style="font-size:25px">  Register Here  </span>
                     </div>
                     <div class="form-group loginuser">
                         <label>User Name: </label>
@@ -100,7 +103,7 @@
             <div class="TabForgotPassDetail form">
                 <form action="/Home/ForgetPassword" method="post" class="login-form">
                     <div class="form-group loginheader">
-                        <h1> Forget Password  </h1>
+                        <span style="font-size:25px"> Forget Password  </span>
                     </div>
                     <div class="form-group loginuser">
                         <label>Email:</label>

@@ -24,6 +24,9 @@
 
     }
 </script>
+<div class="AppName">
+    Employee Management System (EMS)
+</div>
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
 <button type="submit" id="Logout" value="Logout" class="lgout" onclick="location.href='@Url.Action("Logout", "Home")'">
     Logout
@@ -32,11 +35,11 @@
 <div class="EmpContainer">
 
     Add Employee
-    <button type="submit" value="Employee List" class="buttontblAdd" onclick="EmpListView(@resultPager)">
+  <button type="submit" value="Employee List" class="buttontblEmpList" onclick="EmpListView(@resultPager)">
         Go Back to List View
-        <img class="buttontbladdimage" src="~/images/emp list.png" />
+        <img class="buttontblEmpListImg" src="~/images/emp list.png" />
     </button>
-    <h2>Employee Details</h2>
+    <h2>Employee Details</h2>  
     <div> <span class="msgInner">@ViewBag.msg</span></div>
     <form method="post" id="frmAddEmp">
         <div class="rowform odd">

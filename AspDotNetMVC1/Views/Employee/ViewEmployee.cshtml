@@ -25,6 +25,9 @@
 
     }
 </script>
+<div class="AppName">
+    Employee Management System (EMS)
+</div>
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
 <button type="submit" id="Logout" value="Logout" class="lgout" onclick="location.href='@Url.Action("Logout", "Home")'">
     Logout
@@ -33,9 +36,9 @@
 <div class="EmpContainer">
 
     Add Employee
-    <button type="submit" value="Employee List" class="buttontblAdd" onclick="EmpListView(@resultPager)">
+    <button type="submit" value="Employee List" class="buttontblEmpList" onclick="EmpListView(@resultPager)">
         Go Back to List View
-        <img class="buttontbladdimage" src="~/images/emp list.png" />
+        <img class="buttontblEmpListImg" src="~/images/emp list.png" />
     </button>
     <h2>Employee Details</h2>
     <div> <span class="msgInner">@ViewBag.msg</span></div>
@@ -55,7 +58,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Address)
                     @Html.TextBoxFor(m => m.Address, new { @id="txtAdrs" ,  @class = "form-control", @readonly="readonly" })
-                   
+
                 </div>
             </div>
         </div> <div class="rowform">
@@ -64,7 +67,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Role)
                     @Html.TextBoxFor(m => m.Role, new { @id="txtrole" ,@class = "form-control", @readonly="readonly" })
-                   
+
                 </div>
 
             </div>
@@ -82,7 +85,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email)
                     @Html.TextBoxFor(m => m.Email, new { @id="txtEmail", @class = "form-control", @readonly="readonly" })
-                   
+
                 </div>
 
             </div>

@@ -5,12 +5,22 @@ body {
 }
 
 .loginWindow {
-    background-color: rgb(164, 170, 168);
+    background-color: #eddfe5;
     margin: auto;
     width: 98%;
     height: 95vh;
     border: .5px solid green;
     padding: 10px;
+}
+
+.AppName {
+    width: 100%;
+    height: auto;
+    color: #ab1109;
+    font-size: 28px;
+    position: absolute;
+    top: 15%;
+    left: 33%;
 }
 
 .loginbox {
@@ -194,6 +204,9 @@ td, th {
 }
 
 .msgInner {
+    position: relative !important;
+    top: 22px;
+    left: 20px;
     font-size: 18px;
     color: red !important;
 }
@@ -211,8 +224,8 @@ td, th {
 
 .buttontblAdd {
     position: relative !important;
-    left: 410px !important;
-    top: 16px !important;
+    left: 840px !important;
+    top: 47px !important;
     background-color: #a7f2c4; /* Green */
     border: none;
     color: black;
@@ -227,6 +240,37 @@ td, th {
         background-color: #329c36;
         color: white;
     }
+
+.buttontbladdimage {
+    align-items: end;
+    width: 20px;
+    height: 20px;
+}
+
+.buttontblEmpList {
+    position: relative !important;
+    left: 225px !important;
+    top: 47px !important;
+    background-color: #a7f2c4; /* Green */
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+    .buttontblEmpList:hover {
+        background-color: #329c36;
+        color: white;
+    }
+
+.buttontblEmpListImg {
+    align-items: end;
+    width: 20px;
+    height: 20px;
+}
 
 .buttontbl {
     background-color: #44db4a; /* Green */
@@ -263,15 +307,10 @@ td, th {
 .rowformView {
     width: 490px;
 }
+
 .columnformView {
     width: 242px;
     height: 54px;
-}
-
-.buttontbladdimage {
-    align-items: end;
-    width: 20px;
-    height: 20px;
 }
 
 .viewEmpDetail {
@@ -287,6 +326,9 @@ td, th {
 
 .lgout {
     background-color: #c4bee6; /* Green */
+    position: relative !important;
+    left: 860px !important;
+    top: 47px !important;
     border: none;
     color: black;
     padding: 5px 10px;
@@ -300,6 +342,12 @@ td, th {
         background-color: #180882;
         color: white;
     }
+
+.buttontbllogoutimage {
+    align-items: end;
+    width: 20px;
+    height: 20px;
+}
 
 .buttontblview {
     background-color: #a7f2c4; /* Green */
@@ -356,11 +404,7 @@ td, th {
     height: 20px;
 }
 
-.buttontbllogoutimage {
-    align-items: end;
-    width: 20px;
-    height: 20px;
-}
+
 
 .buttontbleditimage {
     align-items: end;
