@@ -1,5 +1,31 @@
 ﻿@using WebApplication_Shared_Services.Model;
+@using Newtonsoft.Json;
+@model Pager;
+@{
+    string resultPager = JsonConvert.SerializeObject(ViewBag.pager, Formatting.None);
+};
+<script>
 
+    function pushPager(pagerObj) {
+        pager = pagerObj;
+    }
+
+    function ViewEmp(ID, pager) {
+        var vewEmpParamData = { id: ID, currentPager: pager }
+        jQuery.post("../Employee/ViewEmployee", vewEmpParamData, function(resultData, status) {
+            jQuery(".container.body-content").html(resultData);
+            //jQuery(".container .body-content").html(resultData);
+        });
+    }
+    
+    function EditEmp(ID, pager) {
+        var editEmpParamData = { id: ID, currentPager: pager }
+        jQuery.post("../Employee/EditEmployee", editEmpParamData, function(resultData, status) {
+            jQuery(".container.body-content").html(resultData);
+            //jQuery(".container .body-content").html(resultData);
+        });
+    }
+</script>
 <div style="width:100%; height:380px; overflow-y: auto;">
     <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
         @foreach (Student std in (List<Student>)ViewBag.studentList)
@@ -26,19 +52,19 @@
                         <button id="myBtn_@std.ID" class="popup">File exists</button>
                     }
                 </td>
-                
+
                 <td width="150">
-                    <button type="submit" id="View_@std.ID" value="View" class="buttontblview" onclick="location.href='@Url.Action("ViewEmployee/"+@std.ID, "Employee")'">
-                    View
-                    
-                     <img class="buttontblViewimage" src="~/images/ViewProfile.png"/>
+                    <button type="button" id="ViewEmp" value="View" class="buttontblview" onclick="ViewEmp(@std.ID,@resultPager)">
+                        View
+
+                        <img class="buttontblViewimage" src="~/images/ViewProfile.png" />
                     </button>
                 </td>
                 <td width="150">
-                    <button type="submit" id="Edit_@std.ID" value="Edit" class="buttontbledit" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'">
-                    Edit
-                    
-                     <img class="buttontbleditimage" src="~/images/Edit.png"/>
+                    <button type="submit" id="Edit_@std.ID" value="Edit" class="buttontbledit" onclick="EditEmp(@std.ID,@resultPager)">
+                        Edit
+
+                        <img class="buttontbleditimage" src="~/images/Edit.png" />
                     </button>
                 </td>
                 @{
@@ -46,9 +72,9 @@
                 }
                 <td width="150">
                     <button type="submit" id="Delete_@std.ID" value="Delete" class="buttontbldelete" onclick="location.href='@Url.Action(@delurl, "Employee")'">
-                    Delete
-                    
-                    <img class="buttontbldeleteimage"  src="~/images/delete.png"/>     
+                        Delete
+
+                        <img class="buttontbldeleteimage" src="~/images/delete.png" />
                     </button>
                 </td>
 

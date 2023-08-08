@@ -1,19 +1,40 @@
-﻿@model StudentViewModel;
+﻿@using Newtonsoft.Json;
+@model StudentViewModel;
 @{
 
     ViewData["Title"] = "Home Page";
 }
+@{
+    string resultPager = JsonConvert.SerializeObject(ViewBag.pager, Formatting.None);
 
+};
+<script>
+
+    function pushPager(pagerObj) {
+        pager = pagerObj;
+    }
+
+    function EmpListView(pager) {
+
+        var vewEmpParamData = { pager: pager }
+
+        jQuery.post("../Employee/GetDashboard", vewEmpParamData, function(resultData, status) {
+            jQuery(".container.body-content").html(resultData);
+        });
+
+
+    }
+</script>
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
 <button type="submit" id="Logout" value="Logout" class="lgout" onclick="location.href='@Url.Action("Logout", "Home")'">
     Logout
-    <img class="buttontbldeleteimage" src="~/images/logout.png" />
+    <img class="buttontbllogoutimage" src="~/images/logout.png" />
 </button>
 <div class="EmpContainer">
 
     Add Employee
-    <button type="submit" value="Employee List" class="buttontblAdd" onclick="location.href='@Url.Action("GetDashboard", "Employee")'">
-        Employee List
+    <button type="submit" value="Employee List" class="buttontblAdd" onclick="EmpListView(@resultPager)">
+        Go Back to List View
         <img class="buttontbladdimage" src="~/images/emp list.png" />
     </button>
     <h2>Employee Details</h2>
@@ -23,32 +44,35 @@
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Name)<br/>
-                    @Html.LabelForModel(Model.Name,  new { @class = "viewEmpDetail" })
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, new { @id="txtName" , @class = "form-control", @readonly="readonly" })
+
                 </div>
 
             </div>
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Address)<br/>
-                    @Html.LabelForModel(Model.Address,  new { @class = "viewEmpDetail" })
+                    @Html.LabelFor(m => m.Address)
+                    @Html.TextBoxFor(m => m.Address, new { @id="txtAdrs" ,  @class = "form-control", @readonly="readonly" })
+                   
                 </div>
             </div>
         </div> <div class="rowform">
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Role)<br/>
-                    @Html.LabelForModel(Model.Role,  new { @class = "viewEmpDetail" })
+                    @Html.LabelFor(m => m.Role)
+                    @Html.TextBoxFor(m => m.Role, new { @id="txtrole" ,@class = "form-control", @readonly="readonly" })
+                   
                 </div>
 
             </div>
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Department)<br/>
-                    @Html.LabelForModel(Model.Department,  new { @class = "viewEmpDetail" })
+                    @Html.LabelFor(m => m.Department)
+                    @Html.TextBoxFor(m => m.Department, new { @id="txtdpt" , @class = "form-control", @readonly="readonly" })
                 </div>
             </div>
         </div>
@@ -56,17 +80,17 @@
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Email)<br/>
-                    @Html.LabelForModel(Model.Email,  new { @class = "viewEmpDetail" })
-                    <span id="validTxtemail" class="msg">Enter valid email id</span>
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @id="txtEmail", @class = "form-control", @readonly="readonly" })
+                   
                 </div>
 
             </div>
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.DOB)<br/>
-                    @Html.LabelForModel(Model.DOB,  new { @class = "viewEmpDetail" })
+                    @Html.LabelFor(m => m.DOB)
+                    @Html.TextBoxFor(m => m.DOB, new { Name = "txtDOB", id = "txtDOB", @class = "form-control", @readonly="readonly" })
 
                 </div>
             </div>
@@ -74,13 +98,13 @@
         <div class="rowform">
             <div class="columnform">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.DOJ)<br/>
-                    @Html.LabelForModel(Model.DOJ,  new { @class = "viewEmpDetail"} )
+                    @Html.LabelFor(m => m.DOJ)
+                    @Html.TextBoxFor(m => m.DOJ, new { Name = "txtDOJ", id = "txtDOJ", @class = "form-control", @readonly="readonly" })
                 </div>
             </div>
             <div class="columnform">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.SkillSets)<br/>
+                    @Html.LabelFor(m => m.SkillSets)
                     <div id="DivSkillset">
                         @if (Model.SkillSets != null)
                         {
@@ -95,12 +119,13 @@
                 </div>
             </div>
         </div>
+
         <div class="rowform odd">
             <div class="columnform">
                 @Html.HiddenFor(m => m.ID)
             </div>
             <div class="columnform">
-                <button type="reset" class="btn btn-primary">Back to Employee List</button>
+                <button type="reset" class="btn btn-primary">Go Back to List View</button>
             </div>
         </div>
     </form>

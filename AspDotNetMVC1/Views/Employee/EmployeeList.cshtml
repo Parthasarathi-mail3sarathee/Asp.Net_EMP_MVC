@@ -7,7 +7,7 @@
 
 <button type="submit" id="Logout" value="Logout" class="lgout"  onclick="location.href='@Url.Action("Logout", "Home")'">
     Logout
-    <img class="buttontbldeleteimage" src="~/images/logout.png" />
+    <img class="buttontbllogoutimage" src="~/images/logout.png" />
 </button>
 <div class="EmpContainer">
 
@@ -30,7 +30,7 @@
                 <td>
 
                     <div id="EmpListContainer">
-                        @Html.Partial("_EmpList");
+                        @Html.Partial("_EmpList",(Pager)ViewBag.pager);
                     </div>
                 </td>
             </tr>

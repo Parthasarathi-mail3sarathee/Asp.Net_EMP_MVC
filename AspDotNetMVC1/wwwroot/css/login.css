@@ -200,7 +200,7 @@ td, th {
 
 
 #tableData tr:nth-child(odd) {
-    background-color: #d0d6d2;
+    background-color: #eddfe5;
 }
 
 .lgout {
@@ -245,7 +245,7 @@ td, th {
     }
 
 .buttontbldelete {
-    background-color: #eddfe5; /* Green */
+    background-color: #d68783; /* Green */
     border: none;
     color: black;
     padding: 5px 10px;
@@ -260,6 +260,14 @@ td, th {
         color: white;
     }
 
+.rowformView {
+    width: 490px;
+}
+.columnformView {
+    width: 242px;
+    height: 54px;
+}
+
 .buttontbladdimage {
     align-items: end;
     width: 20px;
@@ -270,11 +278,13 @@ td, th {
     width: 100%;
     height: 34px;
 }
+
 .buttontblViewimage {
     align-items: end;
     width: 20px;
     height: 20px;
 }
+
 .lgout {
     background-color: #c4bee6; /* Green */
     border: none;
@@ -346,6 +356,12 @@ td, th {
     height: 20px;
 }
 
+.buttontbllogoutimage {
+    align-items: end;
+    width: 20px;
+    height: 20px;
+}
+
 .buttontbleditimage {
     align-items: end;
     width: 20px;
@@ -366,7 +382,7 @@ td, th {
 }
 
 .odd {
-    background-color: #d0d6d2;
+    background-color: #eddfe5;
 }
 
 .buttonlogin {

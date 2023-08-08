@@ -121,6 +121,7 @@ namespace AspDotNetMVC1.Controllers
                 //var queryResultPage = studentlist.Skip(pager.pageSize * (pager.currentPage - 1)).Take(pager.pageSize);
 
                 ViewBag.studentList = studentlist.Students;
+                ViewBag.currentPager = pager;
                 if (studentlist.status == "200")
                 {
                     ViewBag.SessionSet = "true";
@@ -134,7 +135,7 @@ namespace AspDotNetMVC1.Controllers
                     //ORDER BY Price
                     //OFFSET(@PageNumber - 1) * @RowsOfPage ROWS
                     //FETCH NEXT @RowsOfPage ROWS ONLY
-                    ViewBag.pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = 13 };
+                    ViewBag.pager = pager;
                     ViewBag.currentPage = pager.currentPage;
                     return PartialView("_EmpList");
                 }
@@ -207,11 +208,11 @@ namespace AspDotNetMVC1.Controllers
             }
 
         }
-        public IActionResult GetDashboard()
+        public IActionResult GetDashboard(Pager pager)
         {
             byte[] userId;
-            Pager pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
             StudentList studentlist = null;
+            if (pager == null || pager.pageSize == 0) pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null)
@@ -274,7 +275,7 @@ namespace AspDotNetMVC1.Controllers
             }
 
         }
-        public IActionResult EditEmployee(int id)
+        public IActionResult EditEmployee(int id, Pager currentPager)
         {
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
@@ -295,6 +296,7 @@ namespace AspDotNetMVC1.Controllers
                 stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
                 stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
                 stdvm.SkillSets = stud.Student.SkillSets;
+                ViewBag.pager = currentPager;
                 //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
                 if (stud.status == "200")
                 {
@@ -321,7 +323,7 @@ namespace AspDotNetMVC1.Controllers
 
 
         }
-        public IActionResult ViewEmployee(int id)
+        public IActionResult ViewEmployee(int id, Pager currentPager)
         {
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
@@ -343,9 +345,10 @@ namespace AspDotNetMVC1.Controllers
                 stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
                 stdvm.SkillSets = stud.Student.SkillSets;
                 //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
+                ViewBag.pager = currentPager;
                 if (stud.status == "200")
                 {
-                    return View("ViewEmployee", stdvm);
+                    return PartialView("ViewEmployee", stdvm);
                 }
                 else
                 {

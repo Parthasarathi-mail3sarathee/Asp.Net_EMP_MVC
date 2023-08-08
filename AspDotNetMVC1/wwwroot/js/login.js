@@ -1,6 +1,8 @@
 
 $.noConflict();
 jQuery(document).ready(function ($) {
+
+    var pager;
     $('#validTxtSkill').hide();
     $('#validTxtemail').hide();
     $('#validTxtRole').hide();
@@ -83,6 +85,7 @@ jQuery(document).ready(function ($) {
             data: data1, // serializes the form's elements.
             success: function (ajaxData) { // show response from the php script.
                 $('#EmpListContainer').html(ajaxData);
+                pager = data1;
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log("Status: " + textStatus);
@@ -297,6 +300,7 @@ jQuery(document).ready(function ($) {
         $("#Divfileset").empty();
     });
 
+
     // When the user clicks anywhere outside of the modal, close it
 
     //$(".btnEdit").click(function (e) {
@@ -337,7 +341,7 @@ jQuery(document).ready(function ($) {
         return skilset;
     }
 
-    $("#btnSave").click(function (e) {
+    $(document).on('click', '#btnSave', function (e) {
         // avoid to execute the actual submit of the form.
         var isValid = true;
         var skilset = getSkills();
