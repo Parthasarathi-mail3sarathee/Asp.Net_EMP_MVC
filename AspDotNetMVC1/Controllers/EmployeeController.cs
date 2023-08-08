@@ -321,6 +321,53 @@ namespace AspDotNetMVC1.Controllers
 
 
         }
+        public IActionResult ViewEmployee(int id)
+        {
+            var sessionstate = CheckSessionAndUserRole();
+            var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
+            if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
+            {
+                var stud = _studentRepoAPI.GetStudentByID(id, _session.GetString("token"));
+                StudentViewModel stdvm = new StudentViewModel();
+                CultureInfo provider = CultureInfo.InvariantCulture;
+
+                stdvm.ID = stud.Student.ID;
+                stdvm.Name = stud.Student.Name;
+                stdvm.Address = stud.Student.Address;
+                stdvm.Role = stud.Student.Role;
+                stdvm.Department = stud.Student.Department;
+                stdvm.Email = stud.Student.Email;
+                //std.DOB = stud.Student.DOB;
+                //std.DOJ = stud.Student.DOJ;
+                stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
+                stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
+                stdvm.SkillSets = stud.Student.SkillSets;
+                //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
+                if (stud.status == "200")
+                {
+                    return View("ViewEmployee", stdvm);
+                }
+                else
+                {
+                    ViewBag.Emsg = "Unauthorized access/Session expired";
+                    return View("../Home/Index");
+                }
+            }
+            else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
+            {
+                ViewBag.SessionSet = "true";
+                return View("StudentHome");
+            }
+            else
+            {
+                ViewBag.SessionSet = "false";
+                ViewBag.Emsg = "Unauthorized access/Session expired";
+                return View("../Home/Index");
+            }
+
+
+
+        }
 
         public IActionResult DelEmployee(int id)
         {

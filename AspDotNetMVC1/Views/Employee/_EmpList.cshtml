@@ -26,6 +26,14 @@
                         <button id="myBtn_@std.ID" class="popup">File exists</button>
                     }
                 </td>
+                
+                <td width="150">
+                    <button type="submit" id="View_@std.ID" value="View" class="buttontblview" onclick="location.href='@Url.Action("ViewEmployee/"+@std.ID, "Employee")'">
+                    View
+                    
+                     <img class="buttontblViewimage" src="~/images/ViewProfile.png"/>
+                    </button>
+                </td>
                 <td width="150">
                     <button type="submit" id="Edit_@std.ID" value="Edit" class="buttontbledit" onclick="location.href='@Url.Action("EditEmployee/"+@std.ID, "Employee")'">
                     Edit

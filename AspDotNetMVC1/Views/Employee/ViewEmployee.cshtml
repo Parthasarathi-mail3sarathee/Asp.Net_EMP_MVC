@@ -23,35 +23,32 @@
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Name)
-                    @Html.TextBoxFor(m => m.Name, new { @id="txtName" , @class = "form-control" })
-
+                    @Html.LabelFor(m => m.Name)<br/>
+                    @Html.LabelForModel(Model.Name,  new { @class = "viewEmpDetail" })
                 </div>
 
             </div>
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Address)
-                    @Html.TextBoxFor(m => m.Address, new { @id="txtAdrs" ,  @class = "form-control" })
-                    <span id="validTxtName" class="msg"></span>
+                    @Html.LabelFor(m => m.Address)<br/>
+                    @Html.LabelForModel(Model.Address,  new { @class = "viewEmpDetail" })
                 </div>
             </div>
         </div> <div class="rowform">
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Role)
-                    @Html.TextBoxFor(m => m.Role, new { @id="txtrole" ,@class = "form-control" })
-                    <span id="validTxtRole" class="msg">Enter valid Role not more than 6 char</span>
+                    @Html.LabelFor(m => m.Role)<br/>
+                    @Html.LabelForModel(Model.Role,  new { @class = "viewEmpDetail" })
                 </div>
 
             </div>
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Department)
-                    @Html.TextBoxFor(m => m.Department, new { @id="txtdpt" , @class = "form-control" })
+                    @Html.LabelFor(m => m.Department)<br/>
+                    @Html.LabelForModel(Model.Department,  new { @class = "viewEmpDetail" })
                 </div>
             </div>
         </div>
@@ -59,8 +56,8 @@
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, new { @id="txtEmail", @class = "form-control" })
+                    @Html.LabelFor(m => m.Email)<br/>
+                    @Html.LabelForModel(Model.Email,  new { @class = "viewEmpDetail" })
                     <span id="validTxtemail" class="msg">Enter valid email id</span>
                 </div>
 
@@ -68,8 +65,8 @@
             <div class="columnform">
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.DOB)
-                    @Html.TextBoxFor(m => m.DOB, new { Name = "txtDOB", id = "txtDOB", @class = "form-control datepicker" })
+                    @Html.LabelFor(m => m.DOB)<br/>
+                    @Html.LabelForModel(Model.DOB,  new { @class = "viewEmpDetail" })
 
                 </div>
             </div>
@@ -77,21 +74,19 @@
         <div class="rowform">
             <div class="columnform">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.DOJ)
-                    @Html.TextBoxFor(m => m.DOJ, new { Name = "txtDOJ", id = "txtDOJ", @class = "form-control datepicker" })
+                    @Html.LabelFor(m => m.DOJ)<br/>
+                    @Html.LabelForModel(Model.DOJ,  new { @class = "viewEmpDetail"} )
                 </div>
             </div>
             <div class="columnform">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.SkillSets)
-                    <span id="validTxtSkill" class="msg">Enter atleast one skill</span>
-                    <input type="text" id="txtSkill" name="txtSkill" /><button type="button" id="tbnskilladd" name="tbnskilladd">+</button>
+                    @Html.LabelFor(m => m.SkillSets)<br/>
                     <div id="DivSkillset">
                         @if (Model.SkillSets != null)
                         {
                             foreach (var skill in Model.SkillSets)
                             {
-                                <span class="skilsetSpan">@skill <button type="button" class="removeSkill">X</button></span>
+                                <span class="skilsetSpan">@skill</span>
                             }
 
                         }
@@ -100,18 +95,12 @@
                 </div>
             </div>
         </div>
-
-        <div class="rowform">
-            <div class="columnform"> <input type="file" id="profileFile" name="profileFile" multiple="multiple" required /> </div>
-            <div class="columnform"> </div>
-        </div>
         <div class="rowform odd">
             <div class="columnform">
                 @Html.HiddenFor(m => m.ID)
-                <button type="button" id="btnSave" class="btn btn-primary">Save Employee</button>
             </div>
             <div class="columnform">
-                <button type="reset" class="btn btn-primary">Clear field</button>
+                <button type="reset" class="btn btn-primary">Back to Employee List</button>
             </div>
         </div>
     </form>

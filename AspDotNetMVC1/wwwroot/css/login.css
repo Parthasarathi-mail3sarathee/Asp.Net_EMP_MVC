@@ -266,6 +266,47 @@ td, th {
     height: 20px;
 }
 
+.viewEmpDetail {
+    width: 100%;
+    height: 34px;
+}
+.buttontblViewimage {
+    align-items: end;
+    width: 20px;
+    height: 20px;
+}
+.lgout {
+    background-color: #c4bee6; /* Green */
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+    .lgout:hover {
+        background-color: #180882;
+        color: white;
+    }
+
+.buttontblview {
+    background-color: #a7f2c4; /* Green */
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+    .buttontblview:hover {
+        background-color: #329c36;
+        color: white;
+    }
+
 .buttontbledit {
     background-color: #c4bee6; /* Green */
     border: none;
