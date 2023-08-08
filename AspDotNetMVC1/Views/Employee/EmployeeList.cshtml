@@ -4,7 +4,11 @@
 }
 
 @Html.Hidden("SessionSet", (string)ViewBag.NotValidUser)
-<a asp-area="" asp-controller="Home" asp-action="Logout" class="lgout">Logout</a>
+
+<button type="submit" id="Logout" value="Logout" class="lgout"  onclick="location.href='@Url.Action("Logout", "Home")'">
+    Logout
+    <img class="buttontbldeleteimage" src="~/images/delete.png" />
+</button>
 <div class="EmpContainer">
 
     <div id="div">
