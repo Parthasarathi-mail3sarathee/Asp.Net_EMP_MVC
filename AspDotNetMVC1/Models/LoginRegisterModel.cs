@@ -40,9 +40,9 @@ namespace AspDotNetMVC1.Models
         public string token { get; set; }
     }
 
-    public class StudentList
+    public class EmployeeList
     {
-        public List<Student> Students { get; set; }
+        public List<Employee> Employees { get; set; }
         public string status { get; set; }
     }
     public class UserRoleModel
@@ -52,12 +52,12 @@ namespace AspDotNetMVC1.Models
     }
 
 
-    public class StudentModel
+    public class EmployeeModel
     {
-        public Student Student { get; set; }
+        public Employee Employee { get; set; }
         public string status { get; set; }
     }
-    public class StudentViewModel
+    public class EmployeeViewModel
     {
         [StringLength(20), Required]
         public string Name { get; set; }
@@ -97,7 +97,7 @@ namespace AspDotNetMVC1.Models
         public string Emsg { get; set; }
     }
 
-    public class StudentProfile
+    public class EmployeeProfile
     {
         public List<IFormFile> profileFile { get; set; }
     }

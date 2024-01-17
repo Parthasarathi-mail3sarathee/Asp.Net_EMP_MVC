@@ -18,16 +18,16 @@ namespace AspDotNetMVC1.Controllers
     public class EmployeeController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IStudentRepoAPI _studentRepoAPI;
+        private readonly IEmployeeRepoAPI _EmployeeRepoAPI;
         private readonly ILoggers _logger;
         private ISession _session;
 
-        public EmployeeController(IHttpContextAccessor httpContextAccessor, ILoggers logger, IStudentRepoAPI studentRepoAPI)
+        public EmployeeController(IHttpContextAccessor httpContextAccessor, ILoggers logger, IEmployeeRepoAPI EmployeeRepoAPI)
         {
             var path = Directory.GetCurrentDirectory();
             _httpContextAccessor = httpContextAccessor;
             this._session = httpContextAccessor.HttpContext.Session;
-            _studentRepoAPI = studentRepoAPI;
+            _EmployeeRepoAPI = EmployeeRepoAPI;
             _logger = logger;
             _logger.setFileLog($"{path}\\logs\\logger_" + DateTime.Now.ToString("dd_MM_yy") + ".txt");
         }
@@ -49,7 +49,7 @@ namespace AspDotNetMVC1.Controllers
                 sessionState.token = _session.GetString("token");
                 if (sessionState.token != null)
                 {
-                    sessionState.userrole = _studentRepoAPI.GetMyRole(_session.GetString("UserID"), sessionState.token);
+                    sessionState.userrole = _EmployeeRepoAPI.GetMyRole(_session.GetString("UserID"), sessionState.token);
                     if (sessionState.userrole.status == "200")
                     {
                         sessionState.IsValidUser = true;
@@ -88,7 +88,7 @@ namespace AspDotNetMVC1.Controllers
                 else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
                 {
                     ViewBag.SessionSet = "true";
-                    return View("StudentHome");
+                    return View("EmployeeHome");
                 }
                 else
                 {
@@ -111,18 +111,18 @@ namespace AspDotNetMVC1.Controllers
         public IActionResult GetEmpList(Pager pager)
         {
             byte[] userId;
-            StudentList studentlist = null;
+            EmployeeList Employeelist = null;
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null)
             {
-                studentlist = _studentRepoAPI.GetStudentsPerPage(pager, _session.GetString("token"));
+                Employeelist = _EmployeeRepoAPI.GetEmployeesPerPage(pager, _session.GetString("token"));
 
-                //var queryResultPage = studentlist.Skip(pager.pageSize * (pager.currentPage - 1)).Take(pager.pageSize);
+                //var queryResultPage = Employeelist.Skip(pager.pageSize * (pager.currentPage - 1)).Take(pager.pageSize);
 
-                ViewBag.studentList = studentlist.Students;
+                ViewBag.EmployeeList = Employeelist.Employees;
                 ViewBag.currentPager = pager;
-                if (studentlist.status == "200")
+                if (Employeelist.status == "200")
                 {
                     ViewBag.SessionSet = "true";
 
@@ -139,10 +139,10 @@ namespace AspDotNetMVC1.Controllers
                     ViewBag.currentPage = pager.currentPage;
                     return PartialView("_EmpList");
                 }
-                else if (studentlist.status == "401")
+                else if (Employeelist.status == "401")
                 {
                     ViewBag.SessionSet = "true";
-                    return View("StudentHome");
+                    return View("EmployeeHome");
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace AspDotNetMVC1.Controllers
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -166,16 +166,16 @@ namespace AspDotNetMVC1.Controllers
 
 
         [HttpGet]
-        public FileContentResult GetthisStudentFile(int studid, string fileName)
+        public FileContentResult GetthisEmployeeFile(int emplid, string fileName)
         {
             byte[] fileBytes = null;
             Stream stream = null;
-            StudentList studentlist = null;
+            EmployeeList Employeelist = null;
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null)
             {
-                fileBytes = _studentRepoAPI.GetthisStudentFile(studid, fileName, _session.GetString("token"));
+                fileBytes = _EmployeeRepoAPI.GetthisEmployeeFile(emplid, fileName, _session.GetString("token"));
                 string contentType = "application/octet-stream";
 
                 return new FileContentResult(fileBytes, contentType);
@@ -185,14 +185,14 @@ namespace AspDotNetMVC1.Controllers
 
 
         [HttpPost]
-        public List<string> GetStudentFileListByID(int studid)
+        public List<string> GetEmployeeFileListByID(int emplid)
         {
-            StudentList studentlist = null;
+            EmployeeList Employeelist = null;
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null)
             {
-                var res = _studentRepoAPI.GetStudentFileListByID(studid, _session.GetString("token"));
+                var res = _EmployeeRepoAPI.GetEmployeeFileListByID(emplid, _session.GetString("token"));
                 return res;
             }
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
@@ -211,26 +211,26 @@ namespace AspDotNetMVC1.Controllers
         public IActionResult GetDashboard(Pager pager)
         {
             byte[] userId;
-            StudentList studentlist = null;
+            EmployeeList Employeelist = null;
             if (pager == null || pager.pageSize == 0) pager = new Pager() { pageSize = 10, currentPage = 1, pageCount = -1 };
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null)
             {
-                if (pager.pageCount == -1) pager = _studentRepoAPI.GetStudentPageCount(pager, _session.GetString("token"));
-                studentlist = _studentRepoAPI.GetStudentsPerPage(pager, _session.GetString("token"));
-                ViewBag.studentList = studentlist.Students;
-                if (studentlist.status == "200")
+                if (pager.pageCount == -1) pager = _EmployeeRepoAPI.GetEmployeePageCount(pager, _session.GetString("token"));
+                Employeelist = _EmployeeRepoAPI.GetEmployeesPerPage(pager, _session.GetString("token"));
+                ViewBag.EmployeeList = Employeelist.Employees;
+                if (Employeelist.status == "200")
                 {
                     ViewBag.SessionSet = "true";
                     ViewBag.pager = pager;
                     ViewBag.currentPage = pager.currentPage;
                     return View("EmployeeList");
                 }
-                else if (studentlist.status == "401")
+                else if (Employeelist.status == "401")
                 {
                     ViewBag.SessionSet = "true";
-                    return View("StudentHome");
+                    return View("EmployeeHome");
                 }
                 else
                 {
@@ -242,7 +242,7 @@ namespace AspDotNetMVC1.Controllers
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -259,13 +259,13 @@ namespace AspDotNetMVC1.Controllers
             var availRole = sessionstate.userrole.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
             {
-                return View("AddEmployee", new StudentViewModel());
+                return View("AddEmployee", new EmployeeViewModel());
 
             }
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -281,26 +281,26 @@ namespace AspDotNetMVC1.Controllers
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
             {
-                var stud = _studentRepoAPI.GetStudentByID(id, _session.GetString("token"));
-                StudentViewModel stdvm = new StudentViewModel();
+                var empl = _EmployeeRepoAPI.GetEmployeeByID(id, _session.GetString("token"));
+                EmployeeViewModel emplvm = new EmployeeViewModel();
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
-                stdvm.ID = stud.Student.ID;
-                stdvm.Name = stud.Student.Name;
-                stdvm.Address = stud.Student.Address;
-                stdvm.Role = stud.Student.Role;
-                stdvm.Department = stud.Student.Department;
-                stdvm.Email = stud.Student.Email;
-                //std.DOB = stud.Student.DOB;
-                //std.DOJ = stud.Student.DOJ;
-                stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
-                stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
-                stdvm.SkillSets = stud.Student.SkillSets;
+                emplvm.ID = empl.Employee.ID;
+                emplvm.Name = empl.Employee.Name;
+                emplvm.Address = empl.Employee.Address;
+                emplvm.Role = empl.Employee.Role;
+                emplvm.Department = empl.Employee.Department;
+                emplvm.Email = empl.Employee.Email;
+                //emp.DOB = empl.Employee.DOB;
+                //emp.DOJ = empl.Employee.DOJ;
+                emplvm.DOB = empl.Employee.DOB.ToString("MM/dd/yyyy");
+                emplvm.DOJ = empl.Employee.DOJ.ToString("MM/dd/yyyy");
+                emplvm.SkillSets = empl.Employee.SkillSets;
                 ViewBag.pager = currentPager;
-                //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
-                if (stud.status == "200")
+                //emplvm.IsFileContainerExist = empl.Employee.IsFileContainerExist;
+                if (empl.status == "200")
                 {
-                    return View("AddEmployee", stdvm);
+                    return View("AddEmployee", emplvm);
                 }
                 else
                 {
@@ -311,7 +311,7 @@ namespace AspDotNetMVC1.Controllers
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -329,26 +329,26 @@ namespace AspDotNetMVC1.Controllers
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
             {
-                var stud = _studentRepoAPI.GetStudentByID(id, _session.GetString("token"));
-                StudentViewModel stdvm = new StudentViewModel();
+                var empl = _EmployeeRepoAPI.GetEmployeeByID(id, _session.GetString("token"));
+                EmployeeViewModel emplvm = new EmployeeViewModel();
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
-                stdvm.ID = stud.Student.ID;
-                stdvm.Name = stud.Student.Name;
-                stdvm.Address = stud.Student.Address;
-                stdvm.Role = stud.Student.Role;
-                stdvm.Department = stud.Student.Department;
-                stdvm.Email = stud.Student.Email;
-                //std.DOB = stud.Student.DOB;
-                //std.DOJ = stud.Student.DOJ;
-                stdvm.DOB = stud.Student.DOB.ToString("MM/dd/yyyy");
-                stdvm.DOJ = stud.Student.DOJ.ToString("MM/dd/yyyy");
-                stdvm.SkillSets = stud.Student.SkillSets;
-                //stdvm.IsFileContainerExist = stud.Student.IsFileContainerExist;
+                emplvm.ID = empl.Employee.ID;
+                emplvm.Name = empl.Employee.Name;
+                emplvm.Address = empl.Employee.Address;
+                emplvm.Role = empl.Employee.Role;
+                emplvm.Department = empl.Employee.Department;
+                emplvm.Email = empl.Employee.Email;
+                //emp.DOB = empl.Employee.DOB;
+                //emp.DOJ = empl.Employee.DOJ;
+                emplvm.DOB = empl.Employee.DOB.ToString("MM/dd/yyyy");
+                emplvm.DOJ = empl.Employee.DOJ.ToString("MM/dd/yyyy");
+                emplvm.SkillSets = empl.Employee.SkillSets;
+                //emplvm.IsFileContainerExist = empl.Employee.IsFileContainerExist;
                 ViewBag.pager = currentPager;
-                if (stud.status == "200")
+                if (empl.status == "200")
                 {
-                    return PartialView("ViewEmployee", stdvm);
+                    return PartialView("ViewEmployee", emplvm);
                 }
                 else
                 {
@@ -359,7 +359,7 @@ namespace AspDotNetMVC1.Controllers
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -381,12 +381,12 @@ namespace AspDotNetMVC1.Controllers
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
             {
-                StudentList studentlist = null;
-                var stud = _studentRepoAPI.DelStudent(id, sessionstate.token);
-                if (pager.pageCount == -1) pager = _studentRepoAPI.GetStudentPageCount(pager, sessionstate.token);
+                EmployeeList Employeelist = null;
+                var empl = _EmployeeRepoAPI.DelEmployee(id, sessionstate.token);
+                if (pager.pageCount == -1) pager = _EmployeeRepoAPI.GetEmployeePageCount(pager, sessionstate.token);
 
-                studentlist = _studentRepoAPI.GetStudentsPerPage(pager, sessionstate.token);
-                ViewBag.studentList = studentlist.Students;
+                Employeelist = _EmployeeRepoAPI.GetEmployeesPerPage(pager, sessionstate.token);
+                ViewBag.EmployeeList = Employeelist.Employees;
 
                 ViewBag.pager = pager;
                 ViewBag.currentPage = pager.currentPage;
@@ -396,7 +396,7 @@ namespace AspDotNetMVC1.Controllers
             else if (sessionstate.IsValidUser == false && sessionstate.SessionSet == true)
             {
                 ViewBag.SessionSet = "true";
-                return View("StudentHome");
+                return View("EmployeeHome");
             }
             else
             {
@@ -408,43 +408,43 @@ namespace AspDotNetMVC1.Controllers
         }
 
         [HttpPost]
-        public string SaveEmployee(StudentViewModel stud)
+        public string SaveEmployee(EmployeeViewModel empl)
         {
-            StudentProfile stdPrfo = new StudentProfile();
+            EmployeeProfile empPrfo = new EmployeeProfile();
             string status = string.Empty;
             string msg = string.Empty;
             var sessionstate = CheckSessionAndUserRole();
             var availRole = sessionstate.userrole?.userRole.Where(u => u.roleID == 2 || u.roleID == 3 || u.roleID == 4 || u.roleID == 5).ToList();
             if (sessionstate.IsValidUser == true && availRole != null && availRole.Count > 0)
             {
-                if (stud.ID == 0)
+                if (empl.ID == 0)
                 {
                     string token = _session.GetString("token");
                     CultureInfo provider = CultureInfo.InvariantCulture;
                     if (token != null)
                     {
-                        WebApplication_Shared_Services.Model.Student std = new WebApplication_Shared_Services.Model.Student();
-                        std.ID = stud.ID;
-                        std.Name = stud.Name;
-                        std.Address = stud.Address;
-                        std.Role = stud.Role;
-                        std.Department = stud.Department;
-                        std.Email = stud.Email;
-                        //std.DOB = stud.DOB;
-                        //std.DOJ = stud.DOJ;
-                        std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
-                        std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
-                        std.SkillSets = stud.SkillSets;
-                        //std.IsFileContainerExist = stud.IsFileContainerExist; 
-                        stdPrfo.profileFile = stud.profileFile;
-                        status = _studentRepoAPI.AddStudent(std, token);
+                        WebApplication_Shared_Services.Model.Employee emp = new WebApplication_Shared_Services.Model.Employee();
+                        emp.ID = empl.ID;
+                        emp.Name = empl.Name;
+                        emp.Address = empl.Address;
+                        emp.Role = empl.Role;
+                        emp.Department = empl.Department;
+                        emp.Email = empl.Email;
+                        //emp.DOB = empl.DOB;
+                        //emp.DOJ = empl.DOJ;
+                        emp.DOB = DateTime.ParseExact(empl.DOB.ToString(), "MM/dd/yyyy", provider);
+                        emp.DOJ = DateTime.ParseExact(empl.DOJ.ToString(), "MM/dd/yyyy", provider);
+                        emp.SkillSets = empl.SkillSets;
+                        //emp.IsFileContainerExist = empl.IsFileContainerExist; 
+                        empPrfo.profileFile = empl.profileFile;
+                        status = _EmployeeRepoAPI.AddEmployee(emp, token);
                         if (status.Contains("200:"))
                         {
                             var statusval = status.Split(':');
                             int.TryParse(statusval[1], out int idval);
-                            if (stdPrfo?.profileFile?.Count > 0)
+                            if (empPrfo?.profileFile?.Count > 0)
                             {
-                                _studentRepoAPI.AddStudentProfile(idval, stdPrfo.profileFile, token);
+                                _EmployeeRepoAPI.AddEmployeeProfile(idval, empPrfo.profileFile, token);
                             }
                             status = statusval[0];
                         }
@@ -471,26 +471,26 @@ namespace AspDotNetMVC1.Controllers
                     CultureInfo provider = CultureInfo.InvariantCulture;
                     if (token != null)
                     {
-                        WebApplication_Shared_Services.Model.Student std = new WebApplication_Shared_Services.Model.Student();
-                        std.ID = stud.ID;
-                        std.Name = stud.Name;
-                        std.Address = stud.Address;
-                        std.Role = stud.Role;
-                        std.Department = stud.Department;
-                        std.Email = stud.Email;
-                        //std.DOB = stud.DOB;
-                        //std.DOJ = stud.DOJ;
-                        stud.DOB = stud.DOB.Replace('-', '/');
-                        stud.DOJ = stud.DOJ.Replace('-', '/');
-                        std.DOB = DateTime.ParseExact(stud.DOB.ToString(), "MM/dd/yyyy", provider);
-                        std.DOJ = DateTime.ParseExact(stud.DOJ.ToString(), "MM/dd/yyyy", provider);
-                        std.SkillSets = stud.SkillSets;
-                        //std.IsFileContainerExist = stud.IsFileContainerExist;
-                        stdPrfo.profileFile = stud.profileFile;
-                        status = _studentRepoAPI.UpdateStudent(std, token);
-                        if (status == "200" && stdPrfo?.profileFile?.Count > 0)
+                        WebApplication_Shared_Services.Model.Employee emp = new WebApplication_Shared_Services.Model.Employee();
+                        emp.ID = empl.ID;
+                        emp.Name = empl.Name;
+                        emp.Address = empl.Address;
+                        emp.Role = empl.Role;
+                        emp.Department = empl.Department;
+                        emp.Email = empl.Email;
+                        //emp.DOB = empl.DOB;
+                        //emp.DOJ = empl.DOJ;
+                        empl.DOB = empl.DOB.Replace('-', '/');
+                        empl.DOJ = empl.DOJ.Replace('-', '/');
+                        emp.DOB = DateTime.ParseExact(empl.DOB.ToString(), "MM/dd/yyyy", provider);
+                        emp.DOJ = DateTime.ParseExact(empl.DOJ.ToString(), "MM/dd/yyyy", provider);
+                        emp.SkillSets = empl.SkillSets;
+                        //emp.IsFileContainerExist = empl.IsFileContainerExist;
+                        empPrfo.profileFile = empl.profileFile;
+                        status = _EmployeeRepoAPI.UpdateEmployee(emp, token);
+                        if (status == "200" && empPrfo?.profileFile?.Count > 0)
                         {
-                            _studentRepoAPI.AddStudentProfile(std.ID, stdPrfo.profileFile, token);
+                            _EmployeeRepoAPI.AddEmployeeProfile(emp.ID, empPrfo.profileFile, token);
                         }
 
                     }

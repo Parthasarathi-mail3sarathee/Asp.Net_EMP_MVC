@@ -28,50 +28,50 @@
 </script>
 <div style="width:100%; height:380px; overflow-y: auto;">
     <table id="tableData" cellspacing="0" cellpadding="1" border="1" width="800">
-        @foreach (Student std in (List<Student>)ViewBag.studentList)
+        @foreach (Employee emp in (List<Employee>)ViewBag.employeeList)
         {
             <tr class="tdtextalignGrid">
-                <td width="100">@std.ID</td>
-                <td width="100">@std.Name</td>
-                <td width="100">@std.Address</td>
-                <td width="100">@std.Role</td>
-                <td width="100">@std.Department</td>
-                <td width="100">@std.Email</td>
-                <td width="100">@std.DOB</td>
-                <td width="100">@std.DOJ</td>
+                <td width="100">@emp.ID</td>
+                <td width="100">@emp.Name</td>
+                <td width="100">@emp.Address</td>
+                <td width="100">@emp.Role</td>
+                <td width="100">@emp.Department</td>
+                <td width="100">@emp.Email</td>
+                <td width="100">@emp.DOB</td>
+                <td width="100">@emp.DOJ</td>
                 <td width="100">
-                    @if (std.SkillSets != null)
+                    @if (emp.SkillSets != null)
                     {
-                        @string.Join(", ", std.SkillSets)
+                        @string.Join(", ", emp.SkillSets)
                         ;
                     }
                 </td>
                 <td width="100">
-                    @if (std.IsFileContainerExist)
+                    @if (emp.IsFileContainerExist)
                     {
-                        <button id="myBtn_@std.ID" class="popup">File exists</button>
+                        <button id="myBtn_@emp.ID" class="popup">File exists</button>
                     }
                 </td>
 
                 <td width="150">
-                    <button type="button" id="ViewEmp" value="View" class="buttontblview" onclick="ViewEmp(@std.ID,@resultPager)">
+                    <button type="button" id="ViewEmp" value="View" class="buttontblview" onclick="ViewEmp(@emp.ID,@resultPager)">
                         View
 
                         <img class="buttontblViewimage" src="~/images/ViewProfile.png" />
                     </button>
                 </td>
                 <td width="150">
-                    <button type="submit" id="Edit_@std.ID" value="Edit" class="buttontbledit" onclick="EditEmp(@std.ID,@resultPager)">
+                    <button type="submit" id="Edit_@emp.ID" value="Edit" class="buttontbledit" onclick="EditEmp(@emp.ID,@resultPager)">
                         Edit
 
                         <img class="buttontbleditimage" src="~/images/Edit.png" />
                     </button>
                 </td>
                 @{
-                    string delurl = "DelEmployee/" + @std.ID;
+                    string delurl = "DelEmployee/" + @emp.ID;
                 }
                 <td width="150">
-                    <button type="submit" id="Delete_@std.ID" value="Delete" class="buttontbldelete" onclick="location.href='@Url.Action(@delurl, "Employee")'">
+                    <button type="submit" id="Delete_@emp.ID" value="Delete" class="buttontbldelete" onclick="location.href='@Url.Action(@delurl, "Employee")'">
                         Delete
 
                         <img class="buttontbldeleteimage" src="~/images/delete.png" />

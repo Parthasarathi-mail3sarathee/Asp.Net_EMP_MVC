@@ -16,9 +16,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Asp.NetMVC\WebApplication_Shared_Services_Model\WebApplication_Shared_Services_Model.csproj" />
+	<ItemGroup>
+    <ProjectReference Include="..\..\EmpMVC\WebApplication_Shared_Services_Model\WebApplication_Shared_Services_Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

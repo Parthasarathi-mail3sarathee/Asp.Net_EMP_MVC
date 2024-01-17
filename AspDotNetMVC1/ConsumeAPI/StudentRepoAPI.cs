@@ -14,27 +14,27 @@ using WebApplication_Shared_Services.Model;
 
 namespace AspDotNetMVC1.ConsumeAPI
 {
-    public interface IStudentRepoAPI
+    public interface IEmployeeRepoAPI
     {
         UserRoleModel GetMyRole(string userid, string token);
-        Pager GetStudentPageCount(Pager pager, string token);
-        StudentList GetStudentsPerPage(Pager pager, string token);
-        StudentList GetStudents(string token);
-        byte[] GetthisStudentFile(int studid, string fileName, string token);
-        List<string> GetStudentFileListByID(int studid, string token);
-        StudentModel GetStudentByID(int id, string token);
-        string AddStudent(Student std, string token);
-        string AddStudentProfile(int id, IList<IFormFile> stdprofile, string token);
-        string UpdateStudent(Student std, string token);
-        string UpdateStudentProfile(int id, IList<IFormFile> stdprofile, string token);
-        string DelStudent(int id, string token);
+        Pager GetEmployeePageCount(Pager pager, string token);
+        EmployeeList GetEmployeesPerPage(Pager pager, string token);
+        EmployeeList GetEmployees(string token);
+        byte[] GetthisEmployeeFile(int studid, string fileName, string token);
+        List<string> GetEmployeeFileListByID(int studid, string token);
+        EmployeeModel GetEmployeeByID(int id, string token);
+        string AddEmployee(Employee empl, string token);
+        string AddEmployeeProfile(int id, IList<IFormFile> emplprofile, string token);
+        string UpdateEmployee(Employee empl, string token);
+        string UpdateEmployeeProfile(int id, IList<IFormFile> emplprofile, string token);
+        string DelEmployee(int id, string token);
 
     }
-    public class StudentRepoAPI : IStudentRepoAPI
+    public class EmployeeRepoAPI : IEmployeeRepoAPI
     {
         IConfiguration configuration;
 
-        public StudentRepoAPI(IConfiguration configuration)
+        public EmployeeRepoAPI(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -60,9 +60,9 @@ namespace AspDotNetMVC1.ConsumeAPI
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
-                    var getAllStudentString = result.Content.ReadAsStringAsync().Result;
+                    var getAllEmployeeString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    userRolelist.userRole = JsonConvert.DeserializeObject<List<UserRole>>(getAllStudentString);
+                    userRolelist.userRole = JsonConvert.DeserializeObject<List<UserRole>>(getAllEmployeeString);
                     userRolelist.status = "200";
                 }
                 else
@@ -75,9 +75,9 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public Pager GetStudentPageCount(Pager pager, string token)
+        public Pager GetEmployeePageCount(Pager pager, string token)
         {
-            StudentList stdlist = new StudentList();
+            EmployeeList empllist = new EmployeeList();
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
@@ -92,7 +92,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.GetAsync("Student/GetStudentPageCount/" + pager.pageSize).Result;
+                var result = client.GetAsync("Employee/GetEmployeePageCount/" + pager.pageSize).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
@@ -100,24 +100,24 @@ namespace AspDotNetMVC1.ConsumeAPI
                     var pageCountString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
                     pager.pageCount = JsonConvert.DeserializeObject<int>(pageCountString);
-                    stdlist.status = "200";
+                    empllist.status = "200";
                 }
                 else
                 {
-                    stdlist.Students = null;
-                    stdlist.status = "401";
+                    empllist.Employees = null;
+                    empllist.status = "401";
                 }
                 //returning the employee list to view
                 return pager;
             }
         }
 
-        public byte[] GetthisStudentFile(int studid, string fileName, string token)
+        public byte[] GetthisEmployeeFile(int studid, string fileName, string token)
         {
             Stream stream1 = null;
             try
             {
-                byte[] stdfile = null;
+                byte[] emplfile = null;
                 UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
                 ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
                 using (var client = new HttpClient())
@@ -129,7 +129,7 @@ namespace AspDotNetMVC1.ConsumeAPI
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
-                    var result = client.GetAsync("Student/GetStudentFileByIDAndName/" + studid + "/" + fileName).Result;
+                    var result = client.GetAsync("Employee/GetEmployeeFileByIDAndName/" + studid + "/" + fileName).Result;
 
 
                     using (MemoryStream ms = (MemoryStream)result.Content.ReadAsStreamAsync().Result)
@@ -155,8 +155,8 @@ namespace AspDotNetMVC1.ConsumeAPI
             //    {
             //        ms.Write(buffer, 0, read);
             //    }
-            //    stdfile = ms.ToArray();
-            //    return stdfile;
+            //    emplfile = ms.ToArray();
+            //    return emplfile;
             //}
 
         }
@@ -194,9 +194,9 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public List<string> GetStudentFileListByID(int studid, string token)
+        public List<string> GetEmployeeFileListByID(int studid, string token)
         {
-            List<string> stdfilelist = new List<string>();
+            List<string> emplfilelist = new List<string>();
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
@@ -208,25 +208,25 @@ namespace AspDotNetMVC1.ConsumeAPI
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
-                var result = client.GetAsync("Student/GetStudentFileListID/" + studid).Result;
+                var result = client.GetAsync("Employee/GetEmployeeFileListID/" + studid).Result;
 
                 if (result.IsSuccessStatusCode)
                 {
-                    var getAllStudentFileString = result.Content.ReadAsStringAsync().Result;
+                    var getAllEmployeeFileString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    stdfilelist = JsonConvert.DeserializeObject<List<string>>(getAllStudentFileString);
+                    emplfilelist = JsonConvert.DeserializeObject<List<string>>(getAllEmployeeFileString);
                 }
                 else
                 {
-                    stdfilelist = null;
+                    emplfilelist = null;
                 }
                 //returning the employee list to view
-                return stdfilelist;
+                return emplfilelist;
             }
         }
-        public StudentList GetStudentsPerPage(Pager pager, string token)
+        public EmployeeList GetEmployeesPerPage(Pager pager, string token)
         {
-            StudentList stdlist = new StudentList();
+            EmployeeList empllist = new EmployeeList();
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
@@ -241,29 +241,29 @@ namespace AspDotNetMVC1.ConsumeAPI
 
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.GetAsync("Student/GetStudentPerPage/" + pager.currentPage + "/" + pager.pageSize).Result;
+                var result = client.GetAsync("Employee/GetEmployeePerPage/" + pager.currentPage + "/" + pager.pageSize).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
-                    var getAllStudentString = result.Content.ReadAsStringAsync().Result;
+                    var getAllEmployeeString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    stdlist.Students = JsonConvert.DeserializeObject<List<Student>>(getAllStudentString);
-                    stdlist.status = "200";
+                    empllist.Employees = JsonConvert.DeserializeObject<List<Employee>>(getAllEmployeeString);
+                    empllist.status = "200";
                 }
                 else
                 {
-                    stdlist.Students = null;
-                    stdlist.status = "401";
+                    empllist.Employees = null;
+                    empllist.status = "401";
                 }
                 //returning the employee list to view
-                return stdlist;
+                return empllist;
             }
         }
 
-        public StudentList GetStudents(string token)
+        public EmployeeList GetEmployees(string token)
         {
-            StudentList stdlist = new StudentList();
+            EmployeeList empllist = new EmployeeList();
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
             using (var client = new HttpClient())
@@ -278,23 +278,23 @@ namespace AspDotNetMVC1.ConsumeAPI
 
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.GetAsync("Student/Getall").Result;
+                var result = client.GetAsync("Employee/Getall").Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
-                    var getAllStudentString = result.Content.ReadAsStringAsync().Result;
+                    var getAllEmployeeString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    stdlist.Students = JsonConvert.DeserializeObject<List<Student>>(getAllStudentString);
-                    stdlist.status = "200";
+                    empllist.Employees = JsonConvert.DeserializeObject<List<Employee>>(getAllEmployeeString);
+                    empllist.status = "200";
                 }
                 else
                 {
-                    stdlist.Students = null;
-                    stdlist.status = "401";
+                    empllist.Employees = null;
+                    empllist.status = "401";
                 }
                 //returning the employee list to view
-                return stdlist;
+                return empllist;
             }
         }
 
@@ -310,10 +310,10 @@ namespace AspDotNetMVC1.ConsumeAPI
             return false;
         }
 
-        public StudentModel GetStudentByID(int id, string token)
+        public EmployeeModel GetEmployeeByID(int id, string token)
         {
-            StudentModel stdMdl = new StudentModel();
-            Student std1;
+            EmployeeModel emplMdl = new EmployeeModel();
+            Employee empl1;
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
@@ -329,27 +329,27 @@ namespace AspDotNetMVC1.ConsumeAPI
                 client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
 
 
-                var result = client.GetAsync("Student/GetByID/" + id).Result;
+                var result = client.GetAsync("Employee/GetByID/" + id).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
-                    var StdObjString = result.Content.ReadAsStringAsync().Result;
+                    var emplObjString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    stdMdl.Student = JsonConvert.DeserializeObject<Student>(StdObjString);
-                    stdMdl.status = "200";
+                    emplMdl.Employee = JsonConvert.DeserializeObject<Employee>(emplObjString);
+                    emplMdl.status = "200";
                 }
                 else
                 {
-                    stdMdl.status = "401";
+                    emplMdl.status = "401";
                 }
                 //returning the employee list to view
-                return stdMdl;
+                return emplMdl;
             }
         }
-        public string AddStudentProfile(int id, IList<IFormFile> stdprofile, string token)
+        public string AddEmployeeProfile(int id, IList<IFormFile> emplprofile, string token)
         {
-            Student std1;
+            Employee empl1;
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
@@ -420,13 +420,13 @@ namespace AspDotNetMVC1.ConsumeAPI
                 using (var content = new MultipartFormDataContent())
                 {
                     ByteArrayContent byteArrayContent = null;
-                    foreach (var filestd in stdprofile)
+                    foreach (var fileempl in emplprofile)
                     {
-                        if (filestd.Length > 0)
+                        if (fileempl.Length > 0)
                         {
                             using (var ms = new MemoryStream())
                             {
-                                filestd.CopyTo(ms);
+                                fileempl.CopyTo(ms);
                                 var fileBytes = ms.ToArray();
                                 //string s = Convert.ToBase64String(fileBytes);
                                 // act on the Base64 data
@@ -434,9 +434,9 @@ namespace AspDotNetMVC1.ConsumeAPI
 
                             }
                         }
-                        content.Add(byteArrayContent, "profileFile", filestd.FileName);
+                        content.Add(byteArrayContent, "profileFile", fileempl.FileName);
                     }
-                    var result = client.PostAsync("Student/AddStudentProfile/" + id, content).Result;
+                    var result = client.PostAsync("Employee/AddEmployeeProfile/" + id, content).Result;
                     //Checking the response is successful or not which is sent using HttpClient
                     if (result.IsSuccessStatusCode)
                     {
@@ -457,7 +457,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 
             }
         }
-        public string AddStudent(Student std, string token)
+        public string AddEmployee(Employee emp, string token)
         {
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
@@ -473,21 +473,21 @@ namespace AspDotNetMVC1.ConsumeAPI
                 client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
 
 
-                var myContent = JsonConvert.SerializeObject(std);
+                var myContent = JsonConvert.SerializeObject(emp);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                 var byteContent = new ByteArrayContent(buffer);
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PostAsync("Student/AddStudent/", byteContent).Result;
+                var result = client.PostAsync("Employee/AddEmployee/", byteContent).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
                     var tokenString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    std = JsonConvert.DeserializeObject<Student>(tokenString);
-                    status = "200:" + std.ID;
+                    emp = JsonConvert.DeserializeObject<Employee>(tokenString);
+                    status = "200:" + emp.ID;
                 }
                 else
                 {
@@ -497,9 +497,9 @@ namespace AspDotNetMVC1.ConsumeAPI
                 return status;
             }
         }
-        public string UpdateStudentProfile(int id, IList<IFormFile> stdprofile, string token)
+        public string UpdateEmployeeProfile(int id, IList<IFormFile> emplprofile, string token)
         {
-            Student std1;
+            Employee empl1;
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
@@ -517,13 +517,13 @@ namespace AspDotNetMVC1.ConsumeAPI
                 using (var content = new MultipartFormDataContent())
                 {
                     ByteArrayContent byteArrayContent = null;
-                    foreach (var filestd in stdprofile)
+                    foreach (var fileempl in emplprofile)
                     {
-                        if (filestd.Length > 0)
+                        if (fileempl.Length > 0)
                         {
                             using (var ms = new MemoryStream())
                             {
-                                filestd.CopyTo(ms);
+                                fileempl.CopyTo(ms);
                                 var fileBytes = ms.ToArray();
                                 //string s = Convert.ToBase64String(fileBytes);
                                 // act on the Base64 data
@@ -531,9 +531,9 @@ namespace AspDotNetMVC1.ConsumeAPI
 
                             }
                         }
-                        content.Add(byteArrayContent, "profileFile", filestd.FileName);
+                        content.Add(byteArrayContent, "profileFile", fileempl.FileName);
                     }
-                    var result = client.PostAsync("Student/UpdateStudentProfile/" + id, content).Result;
+                    var result = client.PostAsync("Employee/UpdateEmployeeProfile/" + id, content).Result;
                     //Checking the response is successful or not which is sent using HttpClient
                     if (result.IsSuccessStatusCode)
                     {
@@ -555,9 +555,9 @@ namespace AspDotNetMVC1.ConsumeAPI
             }
         }
 
-        public string UpdateStudent(Student std, string token)
+        public string UpdateEmployee(Employee empl, string token)
         {
-            Student std1;
+            Employee empl1;
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
             ApiKey keys = configuration.GetSection("ApiKey").Get<ApiKey>();
@@ -572,20 +572,20 @@ namespace AspDotNetMVC1.ConsumeAPI
                 client.DefaultRequestHeaders.Add(keys.ClientKeyHeader, keys.ClientKey);
 
 
-                var myContent = JsonConvert.SerializeObject(std);
+                var myContent = JsonConvert.SerializeObject(empl);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                 var byteContent = new ByteArrayContent(buffer);
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.PutAsync("Student/UpdateStudent/" + std.ID, byteContent).Result;
+                var result = client.PutAsync("Employee/UpdateEmployee/" + empl.ID, byteContent).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {
                     //Storing the response details recieved from web api
                     var tokenString = result.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
-                    std1 = JsonConvert.DeserializeObject<Student>(tokenString);
+                    empl1 = JsonConvert.DeserializeObject<Employee>(tokenString);
                     status = "200";
                 }
                 else
@@ -598,7 +598,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 
         }
 
-        public string DelStudent(int id, string token)
+        public string DelEmployee(int id, string token)
         {
             string status = string.Empty;
             UrlBase UrlBase = configuration.GetSection("UrlBase").Get<UrlBase>();
@@ -615,7 +615,7 @@ namespace AspDotNetMVC1.ConsumeAPI
 
 
                 //Sending request to find web api REST service resource Gettoken using HttpClient
-                var result = client.DeleteAsync("Student/DeleteStudent/" + id).Result;
+                var result = client.DeleteAsync("Employee/DeleteEmployee/" + id).Result;
                 //Checking the response is successful or not which is sent using HttpClient
                 if (result.IsSuccessStatusCode)
                 {

@@ -49,7 +49,7 @@ namespace AspDotNetMVC1
             services.AddDistributedMemoryCache();
             services.AddResponseCaching();
             services.TryAddScoped<IAuthenticateUserAPI, AuthenticateUserAPI>();
-            services.TryAddScoped<IStudentRepoAPI, StudentRepoAPI>();
+            services.TryAddScoped<IEmployeeRepoAPI, EmployeeRepoAPI>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<ILoggers, Loggers>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
